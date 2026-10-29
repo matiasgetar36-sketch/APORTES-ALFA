@@ -65,6 +65,20 @@ label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--mu
 .mem{cursor:pointer;background:none;border:0;width:100%;text-align:left;color:inherit;font:inherit;padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
 .list .mem:first-child{border-top:0}
 .err{color:var(--bad);font-weight:600;font-size:.9rem}
+.cuotas{display:grid;gap:4px}
+.cuotas span{height:12px;border-radius:4px;background:var(--line)}
+.cuotas span.ok{background:var(--ok)} .cuotas span.bad{background:var(--bad)}
+.cuotas-lbl{display:grid;gap:4px;font-size:.68rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.04em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:420px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--bg);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font-size:1.05rem;font-variant-numeric:tabular-nums}
+.estado{border-radius:10px;padding:10px 12px;font-weight:600;font-size:.92rem}
+.estado.ok{background:var(--ok-soft);color:var(--ok)} .estado.bad{background:var(--bad-soft);color:var(--bad)} .estado.neutral{background:var(--accent-soft);color:var(--accent)}
+.mem-wrap{border-top:1px solid var(--line)} .list .mem-wrap:first-child{border-top:0}
+.mem-wrap .mem{border-top:0}
+.det{display:flex;flex-direction:column;gap:12px;padding:4px 0 16px}
+.det h3{font-family:var(--display);font-size:.95rem;font-weight:600;margin:4px 0 0}
 .center{min-height:60vh;display:flex;flex-direction:column;justify-content:center;gap:16px}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
@@ -104,16 +118,7 @@ label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--mu
       <div class="muted small" id="mPend"></div>
     </div>
 
-    <div class="card">
-      <div class="row"><h2>Aporte mensual</h2><span class="muted small num" id="mComp"></span></div>
-      <div class="bar" id="mBar"></div>
-      <div class="legend">
-        <span><i class="dot" style="background:var(--ok)"></i>Pagado</span>
-        <span><i class="dot" style="background:var(--bad)"></i>Vencido sin pagar</span>
-        <span><i class="dot" style="background:var(--line)"></i>Por vencer</span>
-      </div>
-      <div class="small" id="mAporteTxt"></div>
-    </div>
+    <div class="card" id="mAporte"></div>
 
     <div class="card"><h2>Mi cuenta por concepto</h2><div class="list" id="mConceptos"></div></div>
 
@@ -161,15 +166,11 @@ label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--mu
       </div>
     </div>
 
-    <div class="card" id="tDetalle" hidden>
-      <div class="row"><h2 id="dNombre"></h2><button class="btn link" id="dCerrar">Cerrar</button></div>
-      <div class="row"><div class="muted small">Saldo pendiente</div><div class="num debt" id="dSaldo"></div></div>
-      <div class="list" id="dConceptos"></div>
-      <div class="actions"><a class="btn ghost" id="dLink" target="_blank" rel="noopener">Enviarle su link por WhatsApp</a></div>
-      <div class="muted small" id="dLinkTxt"></div>
+    <div class="card">
+      <div class="row"><h2>Miembros</h2><span class="muted small" id="tAtraso"></span></div>
+      <div class="muted small">Tocá un nombre para ver su cuenta completa.</div>
+      <div class="list" id="tMiembros"></div>
     </div>
-
-    <div class="card"><h2>Miembros</h2><div class="list" id="tMiembros"></div></div>
 
     <div class="card">
       <h2>Registrar pago en efectivo</h2>
@@ -268,33 +269,66 @@ function renderMiembro(){
   else{est.className="pill bad";est.textContent="Con deuda"}
   $("mPend").textContent = c.pendiente>0 ? `Tenés ${fmt(c.pendiente)} en comprobantes esperando verificación.` : "No tenés comprobantes pendientes.";
 
-  const a = c.conceptos.find(x=>x.evento_id===null);
-  const anual = Number(c.aporte_anual)||0;
-  $("mComp").textContent = `Compromiso ${fmt(anual)} al año`;
-  const pP = anual ? Math.min(a.pagado,anual)/anual*100 : 0;
-  const pV = anual ? Math.max(0,a.cargo-a.pagado)/anual*100 : 0;
-  $("mBar").innerHTML = `<span style="width:${pP}%;background:var(--ok)"></span><span style="width:${pV}%;background:var(--bad)"></span>`;
-  const cuotas = m.aporte_mensual>0 ? Math.floor(a.pagado/m.aporte_mensual) : 0;
-  $("mAporteTxt").innerHTML = `Pagaste <b>${Math.min(cuotas,12)} de 12 cuotas</b> (${fmt(a.pagado)}). ` +
-    (a.saldo>0 ? `Vencido sin pagar: <span class="debt">${fmt(a.saldo)}</span>.` : `<span class="paid">Estás al día.</span>`);
-
-  $("mConceptos").innerHTML = c.conceptos.map(r=>`
-    <div class="item"><div class="l"><div style="font-weight:600">${esc(r.nombre)}</div>
-      <div class="muted small">${r.evento_id===null?`${r.cantidad} cuotas vencidas de ${fmt(r.precio)}`:`${plural(r.cantidad,r)} × ${fmt(r.precio)}`} · pagado ${fmt(r.pagado)}${r.pendiente>0?` · ${fmt(r.pendiente)} en revisión`:""}</div></div>
-      <div class="num ${r.saldo>0?"debt":"paid"}">${r.saldo>0?fmt(r.saldo):(r.a_favor>0?`A favor ${fmt(r.a_favor)}`:"Pagado")}</div></div>`).join("");
+  $("mAporte").innerHTML = aporteHTML(c.aporte, true);
+  $("mConceptos").innerHTML = conceptosHTML(c.conceptos);
 
   $("pConcepto").innerHTML = `<option value="">Aporte mensual</option>` + DATA.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("");
 
-  $("mPagos").innerHTML = c.pagos.length ? c.pagos.map(p=>`
-    <div class="item"><div class="l"><div style="font-weight:600">${esc(p.concepto)}</div>
-      <div class="muted small">${p.fecha} · ${p.medio}${p.recibo_nro?` · Recibo N° ${p.recibo_nro}`:""}</div></div>
-      <div style="text-align:right"><div class="num" style="font-weight:700">${fmt(p.monto)}</div>${pillEstado(p.estado)}</div></div>`).join("")
-    : `<div class="muted small">Todavía no hay pagos registrados.</div>`;
+  $("mPagos").innerHTML = pagosHTML(c.pagos);
 
   if(DATA.tesorero){
     $("mTesCard").hidden=false; $("mTesNombre").textContent = DATA.tesorero.nombre;
     $("mTesWa").href = waLink(DATA.tesorero.celular, `Hola ${DATA.tesorero.nombre.split(" ")[0]}, soy ${m.nombre}. `);
   } else $("mTesCard").hidden=true;
+}
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MES_N = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+
+// Estado del aporte anual: cuotas, si está al día y cuánto falta para cancelar el año
+function estadoAporte(a){
+  if(a.meses_vencidos===0) return {cls:"neutral", txt:`Las cuotas empiezan en ${a.mes_desde}.`};
+  if(a.falta_anio<=0) return {cls:"ok", txt:"Año cancelado. ¡Gracias!"};
+  if(a.al_dia) return {cls:"ok", txt: a.adelantado>0 ? `Al día a ${a.mes_actual}, con ${fmt(a.adelantado)} adelantado.` : `Al día a ${a.mes_actual}.`};
+  return {cls:"bad", txt:`Atrasado: debe ${a.cuotas_atrasadas} ${a.cuotas_atrasadas===1?"cuota":"cuotas"} (${fmt(a.atraso)}) a ${a.mes_actual}.`};
+}
+function aporteHTML(a, conTitulo){
+  const n = a.meses_total, inicio = MES_N[a.mes_desde] || 3;
+  const celdas = [], lbls = [];
+  for(let i=0;i<n;i++){
+    const cls = i < a.cuotas_pagas ? "ok" : (i < a.meses_vencidos ? "bad" : "");
+    celdas.push(`<span class="${cls}" title="${MESES[(inicio-1+i)%12]}"></span>`);
+    lbls.push(`<span>${MESES[(inicio-1+i)%12]}</span>`);
+  }
+  const e = estadoAporte(a);
+  return `
+    ${conTitulo?`<div class="row"><h2>Aporte anual</h2><span class="muted small num">${n} cuotas de ${fmt(a.mensual)}</span></div>`:`<h3>Aporte anual · ${n} cuotas de ${fmt(a.mensual)}</h3>`}
+    <div class="estado ${e.cls}">${e.txt}</div>
+    <div><div class="cuotas" style="grid-template-columns:repeat(${n},1fr)">${celdas.join("")}</div>
+      <div class="cuotas-lbl" style="grid-template-columns:repeat(${n},1fr);margin-top:4px">${lbls.join("")}</div></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--ok)"></i>Pagada</span>
+      <span><i class="dot" style="background:var(--bad)"></i>Vencida sin pagar</span>
+      <span><i class="dot" style="background:var(--line)"></i>Por vencer</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="muted small">Compromiso del año</span><b>${fmt(a.anual)}</b></div>
+      <div class="stat"><span class="muted small">Pagado${a.en_revision>0?` (+${fmt(a.en_revision)} en revisión)`:""}</span><b class="paid">${fmt(a.pagado)}</b></div>
+      <div class="stat"><span class="muted small">Falta para cancelar el año</span><b class="${a.falta_anio>0?"debt":"paid"}">${a.falta_anio>0?fmt(a.falta_anio):"Nada"}</b></div>
+    </div>
+    ${a.meses_vencidos>0?`<div class="muted small">A ${a.mes_actual} debería llevar pagado ${fmt(a.debido_a_hoy)} (${a.meses_vencidos} de ${n} cuotas). Las cuotas van de ${a.mes_desde} a ${a.mes_hasta}.</div>`:""}`;
+}
+function conceptosHTML(cs){
+  return cs.map(r=>`
+    <div class="item"><div class="l"><div style="font-weight:600">${esc(r.nombre)}</div>
+      <div class="muted small">${r.evento_id===null?`${r.cantidad} cuotas vencidas de ${fmt(r.precio)}`:`${plural(r.cantidad,r)} × ${fmt(r.precio)}`} · pagado ${fmt(r.pagado)}${r.pendiente>0?` · ${fmt(r.pendiente)} en revisión`:""}</div></div>
+      <div class="num ${r.saldo>0?"debt":"paid"}">${r.saldo>0?fmt(r.saldo):(r.a_favor>0?`A favor ${fmt(r.a_favor)}`:"Pagado")}</div></div>`).join("");
+}
+function pagosHTML(ps){
+  return ps.length ? ps.map(p=>`
+    <div class="item"><div class="l"><div style="font-weight:600">${esc(p.concepto)}</div>
+      <div class="muted small">${p.fecha} · ${p.medio}${p.recibo_nro?` · Recibo N° ${p.recibo_nro}`:""}</div></div>
+      <div style="text-align:right"><div class="num" style="font-weight:700">${fmt(p.monto)}</div>${pillEstado(p.estado)}</div></div>`).join("")
+    : `<div class="muted small">Todavía no hay pagos registrados.</div>`;
 }
 function pillEstado(e){return e==="verificado"?'<span class="pill ok">Verificado</span>':e==="pendiente"?'<span class="pill warn">En revisión</span>':'<span class="pill bad">Rechazado</span>'}
 
@@ -337,10 +371,17 @@ function renderTesorero(){
       <div class="actions" style="width:100%"><button class="btn ok" data-ok="${p.id}">Verificar</button><button class="btn bad" data-no="${p.id}">Rechazar</button></div></div>`).join("")
     : `<div class="muted small">No hay comprobantes para revisar.</div>`;
 
-  $("tMiembros").innerHTML = d.miembros.map(m=>`
-    <button class="mem" data-mem="${m.id}"><div class="l"><div style="font-weight:600">${esc(m.nombre)}</div>
-      <div class="muted small">Aporte ${fmt(m.aporte_mensual)}/mes${d.tesorero.es_general&&m.tesorero?` · ${esc(m.tesorero)}`:""}${m.pendiente>0?` · ${fmt(m.pendiente)} en revisión`:""}</div></div>
-      <div class="num ${m.saldo>0?"debt":"paid"}">${m.saldo>0?fmt(m.saldo):"Al día"}</div></button>`).join("");
+  const atrasados = d.miembros.filter(m=>m.aporte && !m.aporte.al_dia).length;
+  $("tAtraso").textContent = atrasados ? `${atrasados} de ${d.miembros.length} atrasados en el aporte` : "Todos al día con el aporte";
+  $("tMiembros").innerHTML = d.miembros.map(m=>{
+    const a = m.aporte, e = estadoAporte(a);
+    const pill = a.meses_vencidos===0 ? "" : (a.al_dia ? `<span class="pill ok">Aporte al día</span>` : `<span class="pill bad">Atraso ${fmt(a.atraso)}</span>`);
+    return `<div class="mem-wrap">
+      <button class="mem" data-mem="${m.id}" aria-expanded="false"><div class="l"><div style="font-weight:600">${esc(m.nombre)} ${pill}</div>
+        <div class="muted small">${fmt(a.mensual)}/mes · falta ${fmt(a.falta_anio)} para cancelar el año${d.tesorero.es_general&&m.tesorero?` · ${esc(m.tesorero)}`:""}${m.pendiente>0?` · ${fmt(m.pendiente)} en revisión`:""}</div></div>
+        <div style="text-align:right"><div class="muted small">Debe hoy</div><div class="num ${m.saldo>0?"debt":"paid"}">${m.saldo>0?fmt(m.saldo):"Nada"}</div></div></button>
+      <div class="det" data-det="${m.id}" hidden></div></div>`;
+  }).join("");
 
   const mOpts = d.miembros.map(m=>`<option value="${m.id}">${esc(m.nombre)}</option>`).join("");
   for(const id of ["eMiembro","aMiembro"]){ const v=$(id).value; $(id).innerHTML=mOpts; if(v) $(id).value=v; }
@@ -356,6 +397,7 @@ function textoRecibo(r){
   const det = r.cuenta.conceptos.filter(c=>c.saldo>0).map(c=>`• ${c.nombre}: ${fmt(c.saldo)}`).join("\n");
   return `${r.parroquia} · Recibo N° ${r.recibo_nro}\n${r.miembro}\nFecha: ${r.fecha} · ${r.medio}\nConcepto: ${r.concepto}\nMonto recibido: ${fmt(r.monto)}\n\nSaldo pendiente: ${fmt(r.cuenta.saldo)}` +
     (det ? "\n"+det : "\n¡Estás al día! Gracias.") +
+    `\n\nAporte anual: ${estadoAporte(r.cuenta.aporte).txt}\nFalta para cancelar el año: ${fmt(r.cuenta.aporte.falta_anio)}` +
     `\n\nTu cuenta y carga de comprobantes:\n${linkPersonal(r.cuenta.miembro.codigo)}`;
 }
 function mostrarRecibo(r){
@@ -397,22 +439,26 @@ $("tPend").onclick = async e => {
 
 $("tMiembros").onclick = async e => {
   const b = e.target.closest("[data-mem]"); if(!b) return;
+  const det = b.parentElement.querySelector("[data-det]");
+  if(!det.hidden){ det.hidden = true; b.setAttribute("aria-expanded","false"); return; }
+  det.hidden = false; b.setAttribute("aria-expanded","true");
+  det.innerHTML = `<div class="muted small">Cargando…</div>`;
   try{
     const c = await rpc("cuenta_de",{p_codigo:CODIGO,p_miembro:Number(b.dataset.mem)});
-    $("dNombre").textContent = c.miembro.nombre;
-    $("dSaldo").textContent = fmt(c.saldo);
-    $("dConceptos").innerHTML = c.conceptos.map(r=>`
-      <div class="item"><div class="l"><div style="font-weight:600">${esc(r.nombre)}</div>
-        <div class="muted small">Debe ${fmt(r.cargo)} · pagó ${fmt(r.pagado)}</div></div>
-        <div class="num ${r.saldo>0?"debt":"paid"}">${r.saldo>0?fmt(r.saldo):"Pagado"}</div></div>`).join("");
     const link = linkPersonal(c.miembro.codigo);
-    $("dLink").href = waLink(c.miembro.celular, `Hola ${c.miembro.nombre.split(" ")[0]}, este es tu link personal para ver tu cuenta de aportes y cargar comprobantes. No lo compartas:\n${link}`);
-    $("dLinkTxt").textContent = "Link personal: " + link;
-    $("tDetalle").hidden = false;
-    $("tDetalle").scrollIntoView({behavior:"smooth",block:"start"});
-  }catch(err){ toast(err.message) }
+    const msg = `Hola ${c.miembro.nombre.split(" ")[0]}, este es tu link personal para ver tu cuenta de aportes y cargar comprobantes. No lo compartas:\n${link}`;
+    det.innerHTML = `
+      ${aporteHTML(c.aporte, false)}
+      <h3>Por concepto · debe hoy <span class="debt num">${fmt(c.saldo)}</span></h3>
+      <div class="list">${conceptosHTML(c.conceptos)}</div>
+      <h3>Historial de pagos</h3>
+      <div class="list">${pagosHTML(c.pagos)}</div>
+      <div class="actions"><a class="btn ghost" target="_blank" rel="noopener" href="${waLink(c.miembro.celular, msg)}">Enviarle su link por WhatsApp</a>
+        <button class="btn link" data-cerrar>Cerrar</button></div>
+      <div class="muted small" style="word-break:break-all">Link personal: ${esc(link)}</div>`;
+    det.querySelector("[data-cerrar]").onclick = ()=>{ det.hidden = true; b.setAttribute("aria-expanded","false"); b.scrollIntoView({block:"nearest"}); };
+  }catch(err){ det.innerHTML = `<div class="err">${esc(err.message)}</div>`; }
 };
-$("dCerrar").onclick = ()=> $("tDetalle").hidden = true;
 
 $("eGuardar").onclick = () => ocupado($("eGuardar"), async ()=>{
   const monto = Number($("eMonto").value);
