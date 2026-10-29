@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2B55A0">
+<title>Aportes Parroquiales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F2F4F7; --surface:#FFFFFF; --ink:#1B2230; --muted:#5D6778; --line:#DDE2EA;
+  --accent:#2B55A0; --accent-soft:#E3EBF8;
+  --ok:#1F7A4D; --ok-soft:#DFF2E7; --warn:#A8620C; --warn-soft:#FBEBD3; --bad:#B23A3A; --bad-soft:#F7E0E0;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#11151D; --surface:#1A202B; --ink:#E8ECF3; --muted:#9AA4B5; --line:#2C3443;
+  --accent:#7FA3E6; --accent-soft:#22304A;
+  --ok:#5CC08C; --ok-soft:#173226; --warn:#E7A653; --warn-soft:#3A2A14; --bad:#EA7D7D; --bad-soft:#3B1E1E; color-scheme:dark}}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+[hidden]{display:none!important}
+.wrap{max-width:560px;margin:0 auto;padding-block:16px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+section{display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.1rem;font-weight:600}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.big{font-family:var(--display);font-size:2.2rem;font-weight:800;line-height:1}
+.muted{color:var(--muted)} .small{font-size:.85rem}
+select,input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%}
+label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted);font-weight:600}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.grid2{grid-template-columns:1fr}}
+.btn{border:0;border-radius:10px;padding:11px 14px;font:700 .95rem var(--body);cursor:pointer;background:var(--accent);color:var(--surface);text-align:center;text-decoration:none;display:inline-block}
+.btn.ghost{background:var(--accent-soft);color:var(--accent)}
+.btn.ok{background:var(--ok);color:var(--surface)}
+.btn.bad{background:var(--bad-soft);color:var(--bad)}
+.btn.link{background:none;color:var(--accent);padding:6px 0}
+.btn[disabled]{opacity:.55;cursor:wait}
+.btn:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,.mem:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
+.bar span{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.list{display:flex;flex-direction:column}
+.item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
+.item:first-child{border-top:0}
+.l{min-width:0}
+.pill{font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.debt{color:var(--bad);font-weight:700} .paid{color:var(--ok);font-weight:700}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.9rem;max-width:90vw;z-index:20}
+.receipt{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px;font-size:.88rem;white-space:pre-wrap}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.mem{cursor:pointer;background:none;border:0;width:100%;text-align:left;color:inherit;font:inherit;padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.list .mem:first-child{border-top:0}
+.err{color:var(--bad);font-weight:600;font-size:.9rem}
+.cuotas{display:grid;gap:4px}
+.cuotas span{height:12px;border-radius:4px;background:var(--line)}
+.cuotas span.ok{background:var(--ok)} .cuotas span.bad{background:var(--bad)}
+.cuotas-lbl{display:grid;gap:4px;font-size:.68rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.04em}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:420px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--bg);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font-size:1.05rem;font-variant-numeric:tabular-nums}
+.estado{border-radius:10px;padding:10px 12px;font-weight:600;font-size:.92rem}
+.estado.ok{background:var(--ok-soft);color:var(--ok)} .estado.bad{background:var(--bad-soft);color:var(--bad)} .estado.neutral{background:var(--accent-soft);color:var(--accent)}
+.mem-wrap{border-top:1px solid var(--line)} .list .mem-wrap:first-child{border-top:0}
+.mem-wrap .mem{border-top:0}
+.det{display:flex;flex-direction:column;gap:12px;padding:4px 0 16px}
+.det h3{font-family:var(--display);font-size:.95rem;font-weight:600;margin:4px 0 0}
+.center{min-height:60vh;display:flex;flex-direction:column;justify-content:center;gap:16px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow" id="hdrParroquia">Tesorería parroquial</div>
+      <h1 id="hdrTitulo">Aportes</h1>
+    </div>
+    <button class="btn link" id="btnSalir" hidden>Salir</button>
+  </div>
+
+  <!-- CARGANDO -->
+  <section id="vCargando"><div class="card"><div class="muted">Cargando tu cuenta…</div></div></section>
+
+  <!-- INGRESO -->
+  <section id="vLogin" hidden>
+    <div class="card">
+      <h2>Entrá con tu código</h2>
+      <div class="muted small">Lo encontrás en el link que te pasó tu tesorero. Si abriste ese link, entrás directo.</div>
+      <label>Código personal<input id="inCodigo" autocomplete="off" autocapitalize="characters" placeholder="Ej.: LUCIA-3307"></label>
+      <button class="btn" id="btnEntrar">Entrar</button>
+      <div class="err" id="loginErr" hidden></div>
+    </div>
+  </section>
+
+  <!-- MIEMBRO -->
+  <section id="vM" hidden>
+    <div class="card">
+      <div class="eyebrow" id="mHola"></div>
+      <div class="row" style="align-items:flex-end">
+        <div><div class="muted small">Saldo pendiente a hoy</div><div class="big num" id="mSaldo"></div></div>
+        <span class="pill" id="mEstado"></span>
+      </div>
+      <div class="muted small" id="mPend"></div>
+    </div>
+
+    <div class="card" id="mAporte"></div>
+
+    <div class="card"><h2>Mi cuenta por concepto</h2><div class="list" id="mConceptos"></div></div>
+
+    <div class="card">
+      <h2>Cargar un pago</h2>
+      <div class="grid2">
+        <label>Concepto<select id="pConcepto"></select></label>
+        <label>Monto ($)<input id="pMonto" type="number" inputmode="numeric" min="1" placeholder="15000"></label>
+      </div>
+      <label>Comprobante de transferencia<input id="pArchivo" type="file" accept="image/*,application/pdf"></label>
+      <button class="btn" id="pEnviar">Enviar comprobante</button>
+      <div class="err" id="pErr" hidden></div>
+      <div class="muted small">Queda pendiente hasta que tu tesorero lo verifique. Si pagaste en efectivo, lo carga tu tesorero.</div>
+    </div>
+
+    <div class="card"><h2>Mis pagos</h2><div class="list" id="mPagos"></div></div>
+
+    <div class="card" id="mTesCard">
+      <div class="muted small">Tu tesorero</div>
+      <div class="row"><div style="font-weight:700" id="mTesNombre"></div><a class="btn ghost" id="mTesWa" target="_blank" rel="noopener">Escribirle</a></div>
+    </div>
+  </section>
+
+  <!-- TESORERO -->
+  <section id="vT" hidden>
+    <div class="card">
+      <div class="eyebrow" id="tNombre"></div>
+      <div class="row">
+        <div><div class="muted small" id="tTotalLbl">Adeudado por tus miembros</div><div class="big num" id="tTotal"></div></div>
+        <div style="text-align:right"><div class="muted small">Efectivo que cobraste</div><div class="num" style="font-weight:700;font-size:1.2rem" id="tCaja"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><h2>Comprobantes para revisar</h2><span class="pill warn" id="tPendCount"></span></div>
+      <div class="list" id="tPend"></div>
+    </div>
+
+    <div class="card" id="tReciboCard" hidden>
+      <div class="row"><h2>Recibo listo</h2><span class="pill ok">Verificado</span></div>
+      <div class="receipt" id="tRecibo"></div>
+      <div class="actions">
+        <a class="btn ok" id="tWa" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+        <button class="btn ghost" id="tCopy">Copiar texto</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><h2>Miembros</h2><span class="muted small" id="tAtraso"></span></div>
+      <div class="muted small">Tocá un nombre para ver su cuenta completa.</div>
+      <div class="list" id="tMiembros"></div>
+    </div>
+
+    <div class="card">
+      <h2>Registrar pago en efectivo</h2>
+      <div class="grid2">
+        <label>Miembro<select id="eMiembro"></select></label>
+        <label>Concepto<select id="eConcepto"></select></label>
+      </div>
+      <label>Monto ($)<input id="eMonto" type="number" inputmode="numeric" min="1" placeholder="15000"></label>
+      <button class="btn" id="eGuardar">Registrar y generar recibo</button>
+    </div>
+
+    <div class="card">
+      <h2>Entregar un evento</h2>
+      <div class="muted small">Locro, lotería, agendas o bonos: se suma a la deuda del miembro.</div>
+      <div class="grid2">
+        <label>Miembro<select id="aMiembro"></select></label>
+        <label>Evento<select id="aEvento"></select></label>
+      </div>
+      <div class="grid2">
+        <label>Cantidad<input id="aCant" type="number" inputmode="numeric" min="1" value="1"></label>
+        <label>Total<input id="aTotal" type="text" readonly></label>
+      </div>
+      <button class="btn" id="aGuardar">Asignar</button>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+// ===== Configuración de la conexión =====
+const SUPABASE_URL = "https://hrqoghervpbwjbeclbwz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_jOVgmqIM8XINypWnhVaBOA_JofJPGoR";
+
+const $ = id => document.getElementById(id);
+const fmt = n => "$ " + Math.round(Number(n)||0).toLocaleString("es-AR");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const plural = (n,c) => `${n} ${n===1?c.unidad:c.unidad_plural}`;
+const waLink = (tel, txt) => `https://wa.me/${String(tel||"").replace(/\D/g,"")}?text=${encodeURIComponent(txt)}`;
+const linkPersonal = cod => location.origin + location.pathname + "?c=" + encodeURIComponent(cod);
+
+let CODIGO = null, DATA = null;
+
+async function rpc(fn, args){
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method:"POST",
+    headers:{ "apikey":SUPABASE_KEY, "Content-Type":"application/json" },
+    body: JSON.stringify(args)
+  });
+  const j = await r.json().catch(()=>null);
+  if(!r.ok) throw new Error(j?.message || "No se pudo conectar. Revisá tu internet y probá de nuevo.");
+  return j;
+}
+async function fnComprobantes(body){
+  const isForm = body instanceof FormData;
+  const r = await fetch(`${SUPABASE_URL}/functions/v1/comprobantes`, {
+    method:"POST",
+    headers: isForm ? { "apikey":SUPABASE_KEY } : { "apikey":SUPABASE_KEY, "Content-Type":"application/json" },
+    body: isForm ? body : JSON.stringify(body)
+  });
+  const j = await r.json().catch(()=>null);
+  if(!r.ok) throw new Error(j?.error || "No se pudo conectar. Probá de nuevo.");
+  return j;
+}
+
+let tt; function toast(t){const el=$("toast");el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,3000)}
+function mostrar(id){ for(const v of ["vCargando","vLogin","vM","vT"]) $(v).hidden = v!==id; $("btnSalir").hidden = !(id==="vM"||id==="vT"); }
+function guardarCodigo(c){ try{localStorage.setItem("aportes_codigo",c)}catch(_){} }
+function leerCodigo(){ try{return localStorage.getItem("aportes_codigo")}catch(_){return null} }
+async function ocupado(btn, fn){ btn.disabled=true; try{ await fn() } finally { btn.disabled=false } }
+
+async function entrar(cod){
+  mostrar("vCargando");
+  try{
+    DATA = await rpc("entrar", {p_codigo: cod});
+    CODIGO = cod.trim().toUpperCase();
+    guardarCodigo(CODIGO);
+    $("hdrParroquia").textContent = `${DATA.parroquia} · ${DATA.anio}`;
+    if(DATA.tipo==="miembro"){ renderMiembro(); mostrar("vM"); }
+    else { renderTesorero(); mostrar("vT"); }
+  }catch(e){
+    mostrar("vLogin");
+    $("loginErr").textContent = e.message; $("loginErr").hidden = false;
+    try{localStorage.removeItem("aportes_codigo")}catch(_){}
+  }
+}
+
+// ===== Vista miembro =====
+function renderMiembro(){
+  const c = DATA.cuenta, m = c.miembro;
+  $("hdrTitulo").textContent = "Mi cuenta";
+  $("mHola").textContent = "Hola, " + m.nombre.split(" ")[0];
+  $("mSaldo").textContent = fmt(c.saldo);
+  const est=$("mEstado");
+  if(c.saldo<=0){est.className="pill ok";est.textContent="Al día"}
+  else if(c.saldo<=m.aporte_mensual*2){est.className="pill warn";est.textContent="Saldo menor"}
+  else{est.className="pill bad";est.textContent="Con deuda"}
+  $("mPend").textContent = c.pendiente>0 ? `Tenés ${fmt(c.pendiente)} en comprobantes esperando verificación.` : "No tenés comprobantes pendientes.";
+
+  $("mAporte").innerHTML = aporteHTML(c.aporte, true);
+  $("mConceptos").innerHTML = conceptosHTML(c.conceptos);
+
+  $("pConcepto").innerHTML = `<option value="">Aporte mensual</option>` + DATA.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("");
+
+  $("mPagos").innerHTML = pagosHTML(c.pagos);
+
+  if(DATA.tesorero){
+    $("mTesCard").hidden=false; $("mTesNombre").textContent = DATA.tesorero.nombre;
+    $("mTesWa").href = waLink(DATA.tesorero.celular, `Hola ${DATA.tesorero.nombre.split(" ")[0]}, soy ${m.nombre}. `);
+  } else $("mTesCard").hidden=true;
+}
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MES_N = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+
+// Estado del aporte anual: cuotas, si está al día y cuánto falta para cancelar el año
+function estadoAporte(a){
+  if(a.meses_vencidos===0) return {cls:"neutral", txt:`Las cuotas empiezan en ${a.mes_desde}.`};
+  if(a.falta_anio<=0) return {cls:"ok", txt:"Año cancelado. ¡Gracias!"};
+  if(a.al_dia) return {cls:"ok", txt: a.adelantado>0 ? `Al día a ${a.mes_actual}, con ${fmt(a.adelantado)} adelantado.` : `Al día a ${a.mes_actual}.`};
+  return {cls:"bad", txt:`Atrasado: debe ${a.cuotas_atrasadas} ${a.cuotas_atrasadas===1?"cuota":"cuotas"} (${fmt(a.atraso)}) a ${a.mes_actual}.`};
+}
+function aporteHTML(a, conTitulo){
+  const n = a.meses_total, inicio = MES_N[a.mes_desde] || 3;
+  const celdas = [], lbls = [];
+  for(let i=0;i<n;i++){
+    const cls = i < a.cuotas_pagas ? "ok" : (i < a.meses_vencidos ? "bad" : "");
+    celdas.push(`<span class="${cls}" title="${MESES[(inicio-1+i)%12]}"></span>`);
+    lbls.push(`<span>${MESES[(inicio-1+i)%12]}</span>`);
+  }
+  const e = estadoAporte(a);
+  return `
+    ${conTitulo?`<div class="row"><h2>Aporte anual</h2><span class="muted small num">${n} cuotas de ${fmt(a.mensual)}</span></div>`:`<h3>Aporte anual · ${n} cuotas de ${fmt(a.mensual)}</h3>`}
+    <div class="estado ${e.cls}">${e.txt}</div>
+    <div><div class="cuotas" style="grid-template-columns:repeat(${n},1fr)">${celdas.join("")}</div>
+      <div class="cuotas-lbl" style="grid-template-columns:repeat(${n},1fr);margin-top:4px">${lbls.join("")}</div></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--ok)"></i>Pagada</span>
+      <span><i class="dot" style="background:var(--bad)"></i>Vencida sin pagar</span>
+      <span><i class="dot" style="background:var(--line)"></i>Por vencer</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="muted small">Compromiso del año</span><b>${fmt(a.anual)}</b></div>
+      <div class="stat"><span class="muted small">Pagado${a.en_revision>0?` (+${fmt(a.en_revision)} en revisión)`:""}</span><b class="paid">${fmt(a.pagado)}</b></div>
+      <div class="stat"><span class="muted small">Falta para cancelar el año</span><b class="${a.falta_anio>0?"debt":"paid"}">${a.falta_anio>0?fmt(a.falta_anio):"Nada"}</b></div>
+    </div>
+    ${a.meses_vencidos>0?`<div class="muted small">A ${a.mes_actual} debería llevar pagado ${fmt(a.debido_a_hoy)} (${a.meses_vencidos} de ${n} cuotas). Las cuotas van de ${a.mes_desde} a ${a.mes_hasta}.</div>`:""}`;
+}
+function conceptosHTML(cs){
+  return cs.map(r=>`
+    <div class="item"><div class="l"><div style="font-weight:600">${esc(r.nombre)}</div>
+      <div class="muted small">${r.evento_id===null?`${r.cantidad} cuotas vencidas de ${fmt(r.precio)}`:`${plural(r.cantidad,r)} × ${fmt(r.precio)}`} · pagado ${fmt(r.pagado)}${r.pendiente>0?` · ${fmt(r.pendiente)} en revisión`:""}</div></div>
+      <div class="num ${r.saldo>0?"debt":"paid"}">${r.saldo>0?fmt(r.saldo):(r.a_favor>0?`A favor ${fmt(r.a_favor)}`:"Pagado")}</div></div>`).join("");
+}
+function pagosHTML(ps){
+  return ps.length ? ps.map(p=>`
+    <div class="item"><div class="l"><div style="font-weight:600">${esc(p.concepto)}</div>
+      <div class="muted small">${p.fecha} · ${p.medio}${p.recibo_nro?` · Recibo N° ${p.recibo_nro}`:""}</div></div>
+      <div style="text-align:right"><div class="num" style="font-weight:700">${fmt(p.monto)}</div>${pillEstado(p.estado)}</div></div>`).join("")
+    : `<div class="muted small">Todavía no hay pagos registrados.</div>`;
+}
+function pillEstado(e){return e==="verificado"?'<span class="pill ok">Verificado</span>':e==="pendiente"?'<span class="pill warn">En revisión</span>':'<span class="pill bad">Rechazado</span>'}
+
+$("pEnviar").onclick = () => ocupado($("pEnviar"), async ()=>{
+  $("pErr").hidden = true;
+  const monto = Number($("pMonto").value), f = $("pArchivo").files[0];
+  try{
+    if(!(monto>0)) throw new Error("Ingresá el monto que transferiste.");
+    if(!f) throw new Error("Adjuntá la foto o el PDF del comprobante.");
+    if(f.size > 10*1024*1024) throw new Error("El archivo pesa más de 10 MB.");
+    const fd = new FormData();
+    fd.append("codigo", CODIGO); fd.append("monto", String(monto));
+    fd.append("evento_id", $("pConcepto").value); fd.append("archivo", f);
+    $("pEnviar").textContent = "Enviando…";
+    await fnComprobantes(fd);
+    $("pMonto").value=""; $("pArchivo").value="";
+    DATA = await rpc("entrar", {p_codigo: CODIGO}); renderMiembro();
+    toast("Comprobante enviado. Te avisamos cuando se verifique.");
+  }catch(e){ $("pErr").textContent = e.message; $("pErr").hidden = false; }
+  finally{ $("pEnviar").textContent = "Enviar comprobante"; }
+});
+
+// ===== Vista tesorero =====
+function renderTesorero(){
+  const d = DATA;
+  $("hdrTitulo").textContent = "Tesorería";
+  $("tNombre").textContent = d.tesorero.nombre + (d.tesorero.es_general ? " · todos los miembros" : "");
+  $("tTotalLbl").textContent = d.tesorero.es_general ? "Adeudado por todos los miembros" : `Adeudado por tus ${d.miembros.length} miembros`;
+  $("tTotal").textContent = fmt(d.miembros.reduce((s,m)=>s+Number(m.saldo),0));
+  $("tCaja").textContent = fmt(d.efectivo_cobrado);
+
+  const pend = d.pendientes;
+  $("tPendCount").hidden = !pend.length;
+  $("tPendCount").textContent = pend.length + (pend.length===1?" pendiente":" pendientes");
+  $("tPend").innerHTML = pend.length ? pend.map(p=>`
+    <div class="item" style="flex-wrap:wrap"><div class="l"><div style="font-weight:600">${esc(p.miembro)}</div>
+      <div class="muted small">${esc(p.concepto)} · ${p.fecha}</div>
+      ${p.tiene_comprobante?`<button class="btn link small" data-ver="${p.id}">Ver comprobante</button>`:`<div class="muted small">Sin archivo adjunto</div>`}</div>
+      <div class="num" style="font-weight:700">${fmt(p.monto)}</div>
+      <div class="actions" style="width:100%"><button class="btn ok" data-ok="${p.id}">Verificar</button><button class="btn bad" data-no="${p.id}">Rechazar</button></div></div>`).join("")
+    : `<div class="muted small">No hay comprobantes para revisar.</div>`;
+
+  const atrasados = d.miembros.filter(m=>m.aporte && !m.aporte.al_dia).length;
+  $("tAtraso").textContent = atrasados ? `${atrasados} de ${d.miembros.length} atrasados en el aporte` : "Todos al día con el aporte";
+  $("tMiembros").innerHTML = d.miembros.map(m=>{
+    const a = m.aporte, e = estadoAporte(a);
+    const pill = a.meses_vencidos===0 ? "" : (a.al_dia ? `<span class="pill ok">Aporte al día</span>` : `<span class="pill bad">Atraso ${fmt(a.atraso)}</span>`);
+    return `<div class="mem-wrap">
+      <button class="mem" data-mem="${m.id}" aria-expanded="false"><div class="l"><div style="font-weight:600">${esc(m.nombre)} ${pill}</div>
+        <div class="muted small">${fmt(a.mensual)}/mes · falta ${fmt(a.falta_anio)} para cancelar el año${d.tesorero.es_general&&m.tesorero?` · ${esc(m.tesorero)}`:""}${m.pendiente>0?` · ${fmt(m.pendiente)} en revisión`:""}</div></div>
+        <div style="text-align:right"><div class="muted small">Debe hoy</div><div class="num ${m.saldo>0?"debt":"paid"}">${m.saldo>0?fmt(m.saldo):"Nada"}</div></div></button>
+      <div class="det" data-det="${m.id}" hidden></div></div>`;
+  }).join("");
+
+  const mOpts = d.miembros.map(m=>`<option value="${m.id}">${esc(m.nombre)}</option>`).join("");
+  for(const id of ["eMiembro","aMiembro"]){ const v=$(id).value; $(id).innerHTML=mOpts; if(v) $(id).value=v; }
+  $("eConcepto").innerHTML = `<option value="">Aporte mensual</option>` + d.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("");
+  const av=$("aEvento").value;
+  $("aEvento").innerHTML = d.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)} (${fmt(e.precio)})</option>`).join("");
+  if(av) $("aEvento").value=av;
+  calcTotal();
+}
+async function recargar(){ DATA = await rpc("entrar", {p_codigo: CODIGO}); renderTesorero(); }
+
+function textoRecibo(r){
+  const det = r.cuenta.conceptos.filter(c=>c.saldo>0).map(c=>`• ${c.nombre}: ${fmt(c.saldo)}`).join("\n");
+  return `${r.parroquia} · Recibo N° ${r.recibo_nro}\n${r.miembro}\nFecha: ${r.fecha} · ${r.medio}\nConcepto: ${r.concepto}\nMonto recibido: ${fmt(r.monto)}\n\nSaldo pendiente: ${fmt(r.cuenta.saldo)}` +
+    (det ? "\n"+det : "\n¡Estás al día! Gracias.") +
+    `\n\nAporte anual: ${estadoAporte(r.cuenta.aporte).txt}\nFalta para cancelar el año: ${fmt(r.cuenta.aporte.falta_anio)}` +
+    `\n\nTu cuenta y carga de comprobantes:\n${linkPersonal(r.cuenta.miembro.codigo)}`;
+}
+function mostrarRecibo(r){
+  const txt = textoRecibo(r);
+  $("tRecibo").textContent = txt;
+  $("tWa").href = waLink(r.celular, txt);
+  $("tReciboCard").hidden = false;
+  $("tReciboCard").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+$("tPend").onclick = async e => {
+  const b = e.target.closest("button"); if(!b) return;
+  if(b.dataset.ver){
+    await ocupado(b, async ()=>{
+      try{
+        const {url} = await fnComprobantes({accion:"ver", codigo:CODIGO, pago_id:Number(b.dataset.ver)});
+        const a = document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener";
+        a.className="btn link small"; a.textContent="Abrir comprobante ↗";
+        b.replaceWith(a);
+      }catch(err){ toast(err.message) }
+    });
+  }
+  if(b.dataset.ok){
+    await ocupado(b, async ()=>{
+      try{ const r = await rpc("verificar_pago",{p_codigo:CODIGO,p_pago:Number(b.dataset.ok),p_aprobar:true});
+        await recargar(); mostrarRecibo(r); toast("Pago verificado"); }
+      catch(err){ toast(err.message) }
+    });
+  }
+  if(b.dataset.no){
+    if(b.dataset.confirm!=="1"){ b.dataset.confirm="1"; b.textContent="¿Seguro? Tocá de nuevo"; return; }
+    await ocupado(b, async ()=>{
+      try{ await rpc("verificar_pago",{p_codigo:CODIGO,p_pago:Number(b.dataset.no),p_aprobar:false});
+        await recargar(); toast("Comprobante rechazado. Avisale al miembro."); }
+      catch(err){ toast(err.message) }
+    });
+  }
+};
+
+$("tMiembros").onclick = async e => {
+  const b = e.target.closest("[data-mem]"); if(!b) return;
+  const det = b.parentElement.querySelector("[data-det]");
+  if(!det.hidden){ det.hidden = true; b.setAttribute("aria-expanded","false"); return; }
+  det.hidden = false; b.setAttribute("aria-expanded","true");
+  det.innerHTML = `<div class="muted small">Cargando…</div>`;
+  try{
+    const c = await rpc("cuenta_de",{p_codigo:CODIGO,p_miembro:Number(b.dataset.mem)});
+    const link = linkPersonal(c.miembro.codigo);
+    const msg = `Hola ${c.miembro.nombre.split(" ")[0]}, este es tu link personal para ver tu cuenta de aportes y cargar comprobantes. No lo compartas:\n${link}`;
+    det.innerHTML = `
+      ${aporteHTML(c.aporte, false)}
+      <h3>Por concepto · debe hoy <span class="debt num">${fmt(c.saldo)}</span></h3>
+      <div class="list">${conceptosHTML(c.conceptos)}</div>
+      <h3>Historial de pagos</h3>
+      <div class="list">${pagosHTML(c.pagos)}</div>
+      <div class="actions"><a class="btn ghost" target="_blank" rel="noopener" href="${waLink(c.miembro.celular, msg)}">Enviarle su link por WhatsApp</a>
+        <button class="btn link" data-cerrar>Cerrar</button></div>
+      <div class="muted small" style="word-break:break-all">Link personal: ${esc(link)}</div>`;
+    det.querySelector("[data-cerrar]").onclick = ()=>{ det.hidden = true; b.setAttribute("aria-expanded","false"); b.scrollIntoView({block:"nearest"}); };
+  }catch(err){ det.innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+};
+
+$("eGuardar").onclick = () => ocupado($("eGuardar"), async ()=>{
+  const monto = Number($("eMonto").value);
+  if(!(monto>0)){ toast("Ingresá el monto recibido"); return; }
+  try{
+    const r = await rpc("registrar_efectivo",{p_codigo:CODIGO,p_miembro:Number($("eMiembro").value),
+      p_evento:$("eConcepto").value?Number($("eConcepto").value):null,p_monto:monto});
+    $("eMonto").value=""; await recargar(); mostrarRecibo(r); toast("Pago en efectivo registrado");
+  }catch(err){ toast(err.message) }
+});
+
+function calcTotal(){
+  const ev = (DATA?.eventos||[]).find(e=>String(e.id)===$("aEvento").value);
+  $("aTotal").value = ev ? fmt((Number($("aCant").value)||0)*ev.precio) : "";
+}
+$("aEvento").onchange = calcTotal; $("aCant").oninput = calcTotal;
+$("aGuardar").onclick = () => ocupado($("aGuardar"), async ()=>{
+  const cant = Number($("aCant").value);
+  if(!(cant>0)){ toast("Ingresá una cantidad"); return; }
+  try{
+    await rpc("asignar_evento",{p_codigo:CODIGO,p_miembro:Number($("aMiembro").value),p_evento:Number($("aEvento").value),p_cantidad:cant});
+    const nom = $("aMiembro").selectedOptions[0]?.textContent || "";
+    await recargar(); toast(`Asignado a ${nom}`);
+  }catch(err){ toast(err.message) }
+});
+
+$("tCopy").onclick = async ()=>{
+  try{ await navigator.clipboard.writeText($("tRecibo").textContent); toast("Recibo copiado"); }
+  catch(_){ const r=document.createRange(); r.selectNodeContents($("tRecibo")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Texto seleccionado, copialo"); }
+};
+
+// ===== Inicio =====
+$("btnEntrar").onclick = ()=>{ const c=$("inCodigo").value.trim(); if(c){ $("loginErr").hidden=true; entrar(c); } };
+$("inCodigo").onkeydown = e => { if(e.key==="Enter") $("btnEntrar").click(); };
+$("btnSalir").onclick = ()=>{ try{localStorage.removeItem("aportes_codigo")}catch(_){} CODIGO=null; DATA=null;
+  history.replaceState(null,"",location.pathname); $("hdrTitulo").textContent="Aportes"; $("inCodigo").value=""; mostrar("vLogin"); };
+
+const desdeLink = new URLSearchParams(location.search).get("c");
+const inicial = desdeLink || leerCodigo();
+if(inicial) entrar(inicial); else mostrar("vLogin");
+</script>
+</body>
+</html>
