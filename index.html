@@ -3,221 +3,252 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2B55A0">
+<meta name="theme-color" content="#3352C4">
 <title>Aportes Parroquiales</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap">
 <style>
+/* Diseño: app de una columna tipo celular, tarjetas redondeadas, barra de pestañas abajo para tesoreros y guía */
 :root{
-  --bg:#F2F4F7; --surface:#FFFFFF; --ink:#1B2230; --muted:#5D6778; --line:#DDE2EA;
-  --accent:#2B55A0; --accent-soft:#E3EBF8;
-  --ok:#1F7A4D; --ok-soft:#DFF2E7; --warn:#A8620C; --warn-soft:#FBEBD3; --bad:#B23A3A; --bad-soft:#F7E0E0;
-  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
-  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --bg:#F4F5FA; --surface:#FFFFFF; --ink:#1C2233; --muted:#646C80; --line:#E3E6EF;
+  --brand:#3352C4; --brand-ink:#FFFFFF; --brand-soft:#E6EBFB; --brand-deep:#23398F;
+  --sun:#F2B33D; --sun-soft:#FDF1D8;
+  --ok:#1E8A55; --ok-soft:#DDF3E7; --warn:#B26A00; --warn-soft:#FCEBCF; --bad:#C23B3B; --bad-soft:#FBE3E3;
+  --shadow:0 1px 2px rgba(28,34,51,.05),0 6px 18px rgba(28,34,51,.06);
+  --font:"Nunito","Segoe UI",system-ui,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root{
-  --bg:#11151D; --surface:#1A202B; --ink:#E8ECF3; --muted:#9AA4B5; --line:#2C3443;
-  --accent:#7FA3E6; --accent-soft:#22304A;
-  --ok:#5CC08C; --ok-soft:#173226; --warn:#E7A653; --warn-soft:#3A2A14; --bad:#EA7D7D; --bad-soft:#3B1E1E; color-scheme:dark}}
+  --bg:#10131C; --surface:#191E2B; --ink:#E9ECF4; --muted:#A0A8BB; --line:#2A3142;
+  --brand:#7D96F0; --brand-ink:#0E1430; --brand-soft:#232D4F; --brand-deep:#5672D9;
+  --sun:#F2B33D; --sun-soft:#3A2F17;
+  --ok:#5CC98F; --ok-soft:#163626; --warn:#EDAA4E; --warn-soft:#3A2A12; --bad:#EE8080; --bad-soft:#3D1E1E;
+  --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}}
 *{box-sizing:border-box}
-html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
+html{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
 [hidden]{display:none!important}
-.wrap{max-width:560px;margin:0 auto;padding-block:16px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
-section{display:flex;flex-direction:column;gap:16px}
-h1,h2{font-family:var(--display);margin:0;text-wrap:balance}
-h1{font-size:1.5rem;font-weight:800;letter-spacing:-.01em}
-h2{font-size:1.1rem;font-weight:600}
-.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:600px;margin:0 auto;padding-block:12px 120px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:14px}
+.ico{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ico.sm{width:16px;height:16px}
+
+/* Encabezado */
+.head{display:flex;align-items:center;gap:12px;padding:4px 0}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;font-weight:900;flex:none}
+.avatar.sm{width:36px;height:36px;font-size:.85rem}
+.avatar.sun{background:var(--sun);color:#3A2A05}
+.head .who{flex:1;min-width:0}
+.head .who b{display:block;font-size:1.15rem;font-weight:800;line-height:1.2}
+.head .who span{font-size:.85rem;color:var(--muted)}
+.iconbtn{border:0;background:var(--surface);box-shadow:var(--shadow);width:42px;height:42px;border-radius:12px;display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+
+/* Tarjetas */
+.card{background:var(--surface);border-radius:18px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;min-width:0}
+.card h2{margin:0;font-size:1.08rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.card h2 .ico{color:var(--brand)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.muted{color:var(--muted)} .small{font-size:.87rem} .tiny{font-size:.78rem}
 .num{font-variant-numeric:tabular-nums;white-space:nowrap}
-.big{font-family:var(--display);font-size:2.2rem;font-weight:800;line-height:1}
-.muted{color:var(--muted)} .small{font-size:.85rem}
-select,input{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%}
-label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted);font-weight:600}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:420px){.grid2{grid-template-columns:1fr}}
-.btn{border:0;border-radius:10px;padding:11px 14px;font:700 .95rem var(--body);cursor:pointer;background:var(--accent);color:var(--surface);text-align:center;text-decoration:none;display:inline-block}
-.btn.ghost{background:var(--accent-soft);color:var(--accent)}
-.btn.ok{background:var(--ok);color:var(--surface)}
+.debt{color:var(--bad);font-weight:800} .paid{color:var(--ok);font-weight:800}
+
+/* Tarjeta principal */
+.hero{background:linear-gradient(140deg,var(--brand) 0%,var(--brand-deep) 100%);color:#fff;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 24px rgba(51,82,196,.25)}
+@media (prefers-color-scheme: dark){.hero{color:#fff;background:linear-gradient(140deg,#3352C4,#23398F)}}
+.hero .lbl{font-size:.9rem;opacity:.85;font-weight:600}
+.hero .big{font-size:2.6rem;font-weight:900;line-height:1;letter-spacing:-.02em}
+.hero .chip{align-self:flex-start;background:rgba(255,255,255,.18);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.88rem;display:flex;gap:6px;align-items:center}
+.hero .chip.ok{background:#E6F7EE;color:#14663F} .hero .chip.bad{background:#FFE7E7;color:#9C2727}
+.hero .btn{background:#fff;color:#23398F}
+
+/* Botones */
+.btn{border:0;border-radius:14px;padding:13px 16px;font-weight:800;font-size:1rem;cursor:pointer;background:var(--brand);color:var(--brand-ink);display:inline-flex;gap:8px;align-items:center;justify-content:center;text-decoration:none;min-height:48px}
+.btn.block{width:100%}
+.btn.soft{background:var(--brand-soft);color:var(--brand)}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.wa{background:#25A35A;color:#fff}
 .btn.bad{background:var(--bad-soft);color:var(--bad)}
-.btn.link{background:none;color:var(--accent);padding:6px 0}
+.btn.ghost{background:transparent;color:var(--brand);padding:8px 10px;min-height:0}
+.btn.sm{padding:9px 12px;min-height:40px;font-size:.92rem;border-radius:12px}
 .btn[disabled]{opacity:.55;cursor:wait}
-.btn:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible,.mem:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;display:flex}
-.bar span{display:block;height:100%}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
-.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.list{display:flex;flex-direction:column}
-.item{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line);align-items:center}
-.item:first-child{border-top:0}
-.l{min-width:0}
-.pill{font-size:.72rem;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap;display:inline-block}
-.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)}
-.pill.bad{background:var(--bad-soft);color:var(--bad)}
-.debt{color:var(--bad);font-weight:700} .paid{color:var(--ok);font-weight:700}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.9rem;max-width:90vw;z-index:20}
-.receipt{background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:12px;font-size:.88rem;white-space:pre-wrap}
+.btn:focus-visible,.iconbtn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible,.mem:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
-.mem{cursor:pointer;background:none;border:0;width:100%;text-align:left;color:inherit;font:inherit;padding:10px 0;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;align-items:center}
-.list .mem:first-child{border-top:0}
-.err{color:var(--bad);font-weight:600;font-size:.9rem}
-.cuotas{display:grid;gap:4px}
-.cuotas span{height:12px;border-radius:4px;background:var(--line)}
-.cuotas span.ok{background:var(--ok)} .cuotas span.bad{background:var(--bad)}
-.cuotas-lbl{display:grid;gap:4px;font-size:.68rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.04em}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media (max-width:420px){.stats{grid-template-columns:1fr}}
-.stat{background:var(--bg);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:2px;min-width:0}
-.stat b{font-size:1.05rem;font-variant-numeric:tabular-nums}
-.estado{border-radius:10px;padding:10px 12px;font-weight:600;font-size:.92rem}
-.estado.ok{background:var(--ok-soft);color:var(--ok)} .estado.bad{background:var(--bad-soft);color:var(--bad)} .estado.neutral{background:var(--accent-soft);color:var(--accent)}
-.mem-wrap{border-top:1px solid var(--line)} .list .mem-wrap:first-child{border-top:0}
-.mem-wrap .mem{border-top:0}
-.det{display:flex;flex-direction:column;gap:12px;padding:4px 0 16px}
-.det h3{font-family:var(--display);font-size:.95rem;font-weight:600;margin:4px 0 0}
-.center{min-height:60vh;display:flex;flex-direction:column;justify-content:center;gap:16px}
-@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.actions .btn{flex:1 1 auto}
+
+/* Formularios */
+label{display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--muted);font-weight:700}
+input,select{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px;width:100%;font-size:1rem;color:var(--ink)}
+input:focus,select:focus{border-color:var(--brand);outline:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:440px){.grid2{grid-template-columns:1fr}}
+.file{border:2px dashed var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);cursor:pointer;text-align:center}
+.file.has{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.file input{display:none}
+.err{color:var(--bad);font-weight:700;font-size:.92rem}
+
+/* Listas */
+.list{display:flex;flex-direction:column}
+.item{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.list>.item:first-child,.list>.mem-wrap:first-child{border-top:0}
+.item .l{flex:1;min-width:0}
+.item .t{font-weight:800}
+.ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--brand-soft);color:var(--brand)}
+.ic.sun{background:var(--sun-soft);color:var(--warn)} .ic.ok{background:var(--ok-soft);color:var(--ok)} .ic.bad{background:var(--bad-soft);color:var(--bad)}
+.pill{font-size:.75rem;font-weight:800;padding:4px 9px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.neutral{background:var(--brand-soft);color:var(--brand)}
+.pill.off{background:var(--line);color:var(--muted)}
+.mem-wrap{border-top:1px solid var(--line)}
+.mem{display:flex;gap:12px;align-items:center;width:100%;background:none;border:0;text-align:left;cursor:pointer;padding:12px 0;color:inherit}
+.mem .chev{color:var(--muted);transition:transform .2s}
+.mem[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.det{display:flex;flex-direction:column;gap:12px;padding:4px 0 18px}
+.det h3{font-size:.95rem;font-weight:800;margin:6px 0 0}
+.search{position:relative}
+.search .ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{padding-left:40px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{border:2px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.85rem;cursor:pointer;color:var(--muted)}
+.filters button[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+
+/* Cuotas */
+.cuotas{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.cuota{border-radius:12px;padding:8px 4px;text-align:center;background:var(--bg);border:2px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase}
+.cuota .ico{width:16px;height:16px}
+.cuota.ok{background:var(--ok-soft);border-color:transparent;color:var(--ok)}
+.cuota.bad{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+.estado{border-radius:14px;padding:12px 14px;font-weight:800;display:flex;gap:10px;align-items:center}
+.estado.ok{background:var(--ok-soft);color:var(--ok)} .estado.bad{background:var(--bad-soft);color:var(--bad)} .estado.neutral{background:var(--brand-soft);color:var(--brand)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:440px){.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}
+.stat{background:var(--bg);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font-size:1.1rem;font-weight:900;font-variant-numeric:tabular-nums}
+.prog{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.prog span{display:block;height:100%;background:var(--ok);border-radius:99px}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--surface);border-radius:18px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .v{font-size:1.45rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi .k{font-size:.85rem;color:var(--muted);font-weight:700}
+.tablewrap{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:.9rem}
+table.t th{text-align:left;color:var(--muted);font-weight:700;font-size:.78rem;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:10px 8px;border-bottom:1px solid var(--line)}
+table.t td.n,table.t th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Pestañas abajo */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));z-index:15}
+.tabs .in{display:flex;max-width:600px;width:100%}
+.tab{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;font-size:.72rem;font-weight:800;color:var(--muted);cursor:pointer;border-radius:12px;position:relative}
+.tab[aria-current="page"]{color:var(--brand);background:var(--brand-soft)}
+.tab .badge{position:absolute;top:2px;right:calc(50% - 22px);background:var(--bad);color:#fff;border-radius:999px;font-size:.65rem;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+
+/* Hoja inferior (formularios) */
+.sheet-bg{position:fixed;inset:0;background:rgba(16,19,28,.45);z-index:30;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:600px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:20px max(18px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:14px}
+.sheet .grab{width:44px;height:5px;border-radius:99px;background:var(--line);align-self:center}
+.sheet h2{margin:0;font-size:1.2rem;font-weight:900}
+.receipt{background:var(--bg);border-radius:14px;padding:14px;font-size:.9rem;white-space:pre-wrap;font-family:inherit}
+.check{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font-weight:700;color:var(--ink);flex-direction:row;font-size:1rem}
+.check input{width:22px;height:22px;flex:none;accent-color:var(--brand)}
+.check:first-child{border-top:0}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;font-size:.92rem;max-width:90vw;z-index:40;box-shadow:var(--shadow)}
+.login{min-height:70vh;display:flex;flex-direction:column;justify-content:center;gap:18px}
+.login .logo{width:64px;height:64px;border-radius:20px;background:var(--brand);color:#fff;display:grid;place-items:center}
+.login .logo .ico{width:32px;height:32px}
+.login h1{font-size:1.8rem;font-weight:900;margin:0;line-height:1.15;text-wrap:balance}
+.empty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px;color:var(--muted);text-align:center}
+.empty .ic{width:48px;height:48px;border-radius:16px}
+.sec-title{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800;margin:6px 4px -4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div>
-      <div class="eyebrow" id="hdrParroquia">Tesorería parroquial</div>
-      <h1 id="hdrTitulo">Aportes</h1>
-    </div>
-    <button class="btn link" id="btnSalir" hidden>Salir</button>
-  </div>
+<div class="wrap" id="app">
+  <section id="vCargando"><div class="card"><div class="muted">Cargando…</div></div></section>
 
-  <!-- CARGANDO -->
-  <section id="vCargando"><div class="card"><div class="muted">Cargando tu cuenta…</div></div></section>
-
-  <!-- INGRESO -->
-  <section id="vLogin" hidden>
+  <section id="vLogin" class="login" hidden>
+    <div class="logo"><svg class="ico"><use href="#i-heart"/></svg></div>
+    <h1>Aportes de la parroquia</h1>
+    <div class="muted">Entrá con el código personal que te pasó tu tesorero. Si abriste tu link, entrás directo.</div>
     <div class="card">
-      <h2>Entrá con tu código</h2>
-      <div class="muted small">Lo encontrás en el link que te pasó tu tesorero. Si abriste ese link, entrás directo.</div>
-      <label>Código personal<input id="inCodigo" autocomplete="off" autocapitalize="characters" placeholder="Ej.: LUCIA-3307"></label>
-      <button class="btn" id="btnEntrar">Entrar</button>
+      <label>Tu código<input id="inCodigo" autocomplete="off" autocapitalize="characters" placeholder="Ej.: AB3K-7QPZ"></label>
+      <button class="btn block" id="btnEntrar">Entrar</button>
       <div class="err" id="loginErr" hidden></div>
     </div>
   </section>
 
-  <!-- MIEMBRO -->
-  <section id="vM" hidden>
-    <div class="card">
-      <div class="eyebrow" id="mHola"></div>
-      <div class="row" style="align-items:flex-end">
-        <div><div class="muted small">Saldo pendiente a hoy</div><div class="big num" id="mSaldo"></div></div>
-        <span class="pill" id="mEstado"></span>
-      </div>
-      <div class="muted small" id="mPend"></div>
-    </div>
-
-    <div class="card" id="mAporte"></div>
-
-    <div class="card"><h2>Mi cuenta por concepto</h2><div class="list" id="mConceptos"></div></div>
-
-    <div class="card">
-      <h2>Cargar un pago</h2>
-      <div class="grid2">
-        <label>Concepto<select id="pConcepto"></select></label>
-        <label>Monto ($)<input id="pMonto" type="number" inputmode="numeric" min="1" placeholder="15000"></label>
-      </div>
-      <label>Comprobante de transferencia<input id="pArchivo" type="file" accept="image/*,application/pdf"></label>
-      <button class="btn" id="pEnviar">Enviar comprobante</button>
-      <div class="err" id="pErr" hidden></div>
-      <div class="muted small">Queda pendiente hasta que tu tesorero lo verifique. Si pagaste en efectivo, lo carga tu tesorero.</div>
-    </div>
-
-    <div class="card"><h2>Mis pagos</h2><div class="list" id="mPagos"></div></div>
-
-    <div class="card" id="mTesCard">
-      <div class="muted small">Tu tesorero</div>
-      <div class="row"><div style="font-weight:700" id="mTesNombre"></div><a class="btn ghost" id="mTesWa" target="_blank" rel="noopener">Escribirle</a></div>
-    </div>
-  </section>
-
-  <!-- TESORERO -->
-  <section id="vT" hidden>
-    <div class="card">
-      <div class="eyebrow" id="tNombre"></div>
-      <div class="row">
-        <div><div class="muted small" id="tTotalLbl">Adeudado por tus miembros</div><div class="big num" id="tTotal"></div></div>
-        <div style="text-align:right"><div class="muted small">Efectivo que cobraste</div><div class="num" style="font-weight:700;font-size:1.2rem" id="tCaja"></div></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row"><h2>Comprobantes para revisar</h2><span class="pill warn" id="tPendCount"></span></div>
-      <div class="list" id="tPend"></div>
-    </div>
-
-    <div class="card" id="tReciboCard" hidden>
-      <div class="row"><h2>Recibo listo</h2><span class="pill ok">Verificado</span></div>
-      <div class="receipt" id="tRecibo"></div>
-      <div class="actions">
-        <a class="btn ok" id="tWa" target="_blank" rel="noopener">Enviar por WhatsApp</a>
-        <button class="btn ghost" id="tCopy">Copiar texto</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row"><h2>Miembros</h2><span class="muted small" id="tAtraso"></span></div>
-      <div class="muted small">Tocá un nombre para ver su cuenta completa.</div>
-      <div class="list" id="tMiembros"></div>
-    </div>
-
-    <div class="card">
-      <h2>Registrar pago en efectivo</h2>
-      <div class="grid2">
-        <label>Miembro<select id="eMiembro"></select></label>
-        <label>Concepto<select id="eConcepto"></select></label>
-      </div>
-      <label>Monto ($)<input id="eMonto" type="number" inputmode="numeric" min="1" placeholder="15000"></label>
-      <button class="btn" id="eGuardar">Registrar y generar recibo</button>
-    </div>
-
-    <div class="card">
-      <h2>Entregar un evento</h2>
-      <div class="muted small">Locro, lotería, agendas o bonos: se suma a la deuda del miembro.</div>
-      <div class="grid2">
-        <label>Miembro<select id="aMiembro"></select></label>
-        <label>Evento<select id="aEvento"></select></label>
-      </div>
-      <div class="grid2">
-        <label>Cantidad<input id="aCant" type="number" inputmode="numeric" min="1" value="1"></label>
-        <label>Total<input id="aTotal" type="text" readonly></label>
-      </div>
-      <button class="btn" id="aGuardar">Asignar</button>
-    </div>
-  </section>
+  <div id="vMain" hidden></div>
 </div>
+<nav class="tabs" id="tabs" hidden><div class="in" id="tabsIn"></div></nav>
 <div class="toast" id="toast" hidden></div>
+<div id="sheetRoot"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2M16 7l3 3M18.5 4.5l2 2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+  <symbol id="i-power" viewBox="0 0 24 24"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+</svg>
 
 <script>
-// ===== Configuración de la conexión =====
+// ===== Conexión =====
 const SUPABASE_URL = "https://hrqoghervpbwjbeclbwz.supabase.co";
 const SUPABASE_KEY = "sb_publishable_jOVgmqIM8XINypWnhVaBOA_JofJPGoR";
 
+// ===== Utilidades =====
 const $ = id => document.getElementById(id);
 const fmt = n => "$ " + Math.round(Number(n)||0).toLocaleString("es-AR");
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const I = (n, cls="") => `<svg class="ico ${cls}"><use href="#i-${n}"/></svg>`;
+const ini = n => String(n||"?").trim().split(/\s+/).slice(0,2).map(p=>p[0]).join("").toUpperCase();
+const primer = n => String(n||"").trim().split(" ")[0];
 const plural = (n,c) => `${n} ${n===1?c.unidad:c.unidad_plural}`;
-const waLink = (tel, txt) => `https://wa.me/${String(tel||"").replace(/\D/g,"")}?text=${encodeURIComponent(txt)}`;
+function telWA(t){
+  let d = String(t||"").replace(/\D/g,"");
+  if(!d) return "";
+  if(d.startsWith("0")) d = d.slice(1);
+  if(d.length===10) d = "549"+d;                 // 381 5550101 -> 549 381 5550101
+  else if(d.startsWith("54") && !d.startsWith("549")) d = "549"+d.slice(2);
+  return d;
+}
+const waLink = (tel, txt) => `https://wa.me/${telWA(tel)}?text=${encodeURIComponent(txt)}`;
 const linkPersonal = cod => location.origin + location.pathname + "?c=" + encodeURIComponent(cod);
+const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MES_N = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
 
-let CODIGO = null, DATA = null;
+let tt; function toast(t){const el=$("toast");el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,3200)}
+function store(k,v){try{ v===null?localStorage.removeItem(k):localStorage.setItem(k,v) }catch(_){}}
+function read(k){try{return localStorage.getItem(k)}catch(_){return null}}
+async function ocupado(btn, fn){ if(btn) btn.disabled=true; try{ return await fn() } finally { if(btn) btn.disabled=false } }
 
 async function rpc(fn, args){
   const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
-    method:"POST",
-    headers:{ "apikey":SUPABASE_KEY, "Content-Type":"application/json" },
-    body: JSON.stringify(args)
+    method:"POST", headers:{ "apikey":SUPABASE_KEY, "Content-Type":"application/json" }, body: JSON.stringify(args)
   });
   const j = await r.json().catch(()=>null);
   if(!r.ok) throw new Error(j?.message || "No se pudo conectar. Revisá tu internet y probá de nuevo.");
@@ -234,270 +265,594 @@ async function fnComprobantes(body){
   if(!r.ok) throw new Error(j?.error || "No se pudo conectar. Probá de nuevo.");
   return j;
 }
+// Achica las fotos antes de subirlas (ahorra espacio y datos)
+async function comprimir(file){
+  if(!file.type.startsWith("image/") || /heic|heif/i.test(file.type)) return file;
+  try{
+    const bmp = await createImageBitmap(file);
+    const k = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas"); c.width = Math.round(bmp.width*k); c.height = Math.round(bmp.height*k);
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(res => c.toBlob(res, "image/jpeg", 0.72));
+    if(!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.\w+$/, "") + ".jpg", {type:"image/jpeg"});
+  }catch(_){ return file; }
+}
 
-let tt; function toast(t){const el=$("toast");el.textContent=t;el.hidden=false;clearTimeout(tt);tt=setTimeout(()=>el.hidden=true,3000)}
-function mostrar(id){ for(const v of ["vCargando","vLogin","vM","vT"]) $(v).hidden = v!==id; $("btnSalir").hidden = !(id==="vM"||id==="vT"); }
-function guardarCodigo(c){ try{localStorage.setItem("aportes_codigo",c)}catch(_){} }
-function leerCodigo(){ try{return localStorage.getItem("aportes_codigo")}catch(_){return null} }
-async function ocupado(btn, fn){ btn.disabled=true; try{ await fn() } finally { btn.disabled=false } }
+// ===== Hoja inferior =====
+function abrirHoja(html, onMount){
+  const bg = document.createElement("div"); bg.className = "sheet-bg";
+  bg.innerHTML = `<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
+  const cerrar = () => { bg.remove(); document.body.style.overflow = ""; };
+  bg.addEventListener("click", e => { if(e.target===bg || e.target.closest("[data-cerrar]")) cerrar(); });
+  $("sheetRoot").appendChild(bg); document.body.style.overflow = "hidden";
+  onMount && onMount(bg.querySelector(".sheet"), cerrar);
+  const f = bg.querySelector("input,select"); if(f) setTimeout(()=>f.focus(), 50);
+  return cerrar;
+}
+function confirmar(titulo, texto, boton, cls="bad"){
+  return new Promise(res=>{
+    abrirHoja(`<h2>${esc(titulo)}</h2><div class="muted">${texto}</div>
+      <div class="actions"><button class="btn soft" data-no>Cancelar</button><button class="btn ${cls}" data-si>${esc(boton)}</button></div>`,
+      (s, cerrar)=>{ s.querySelector("[data-no]").onclick=()=>{cerrar();res(false)}; s.querySelector("[data-si]").onclick=()=>{cerrar();res(true)}; });
+  });
+}
+
+// ===== Estado =====
+const S = { codigo:null, data:null, panel:null, tab:"inicio", filtro:"todos", busca:"", sub:"tesoreros" };
 
 async function entrar(cod){
   mostrar("vCargando");
   try{
-    DATA = await rpc("entrar", {p_codigo: cod});
-    CODIGO = cod.trim().toUpperCase();
-    guardarCodigo(CODIGO);
-    $("hdrParroquia").textContent = `${DATA.parroquia} · ${DATA.anio}`;
-    if(DATA.tipo==="miembro"){ renderMiembro(); mostrar("vM"); }
-    else { renderTesorero(); mostrar("vT"); }
+    S.data = await rpc("entrar", {p_codigo: cod});
+    S.codigo = cod.trim().toUpperCase();
+    store("aportes_codigo", S.codigo);
+    if(S.data.tipo==="guia"){ try{ S.panel = await rpc("guia_panel",{p_codigo:S.codigo}); }catch(_){ S.panel=null; } }
+    S.tab = read("aportes_tab_"+S.data.tipo) || "inicio";
+    render();
   }catch(e){
-    mostrar("vLogin");
-    $("loginErr").textContent = e.message; $("loginErr").hidden = false;
-    try{localStorage.removeItem("aportes_codigo")}catch(_){}
+    store("aportes_codigo", null);
+    mostrar("vLogin"); $("loginErr").textContent = e.message; $("loginErr").hidden = false;
   }
 }
-
-// ===== Vista miembro =====
-function renderMiembro(){
-  const c = DATA.cuenta, m = c.miembro;
-  $("hdrTitulo").textContent = "Mi cuenta";
-  $("mHola").textContent = "Hola, " + m.nombre.split(" ")[0];
-  $("mSaldo").textContent = fmt(c.saldo);
-  const est=$("mEstado");
-  if(c.saldo<=0){est.className="pill ok";est.textContent="Al día"}
-  else if(c.saldo<=m.aporte_mensual*2){est.className="pill warn";est.textContent="Saldo menor"}
-  else{est.className="pill bad";est.textContent="Con deuda"}
-  $("mPend").textContent = c.pendiente>0 ? `Tenés ${fmt(c.pendiente)} en comprobantes esperando verificación.` : "No tenés comprobantes pendientes.";
-
-  $("mAporte").innerHTML = aporteHTML(c.aporte, true);
-  $("mConceptos").innerHTML = conceptosHTML(c.conceptos);
-
-  $("pConcepto").innerHTML = `<option value="">Aporte mensual</option>` + DATA.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("");
-
-  $("mPagos").innerHTML = pagosHTML(c.pagos);
-
-  if(DATA.tesorero){
-    $("mTesCard").hidden=false; $("mTesNombre").textContent = DATA.tesorero.nombre;
-    $("mTesWa").href = waLink(DATA.tesorero.celular, `Hola ${DATA.tesorero.nombre.split(" ")[0]}, soy ${m.nombre}. `);
-  } else $("mTesCard").hidden=true;
+async function recargar(){
+  S.data = await rpc("entrar", {p_codigo:S.codigo});
+  if(S.data.tipo==="guia") S.panel = await rpc("guia_panel",{p_codigo:S.codigo});
+  render();
 }
-const MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
-const MES_N = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+function mostrar(id){
+  for(const v of ["vCargando","vLogin","vMain"]) $(v).hidden = v!==id;
+  $("tabs").hidden = !(id==="vMain" && S.data && S.data.tipo!=="miembro");
+}
+function salir(){
+  store("aportes_codigo", null); S.codigo=null; S.data=null; S.panel=null;
+  history.replaceState(null,"",location.pathname); $("inCodigo").value=""; $("loginErr").hidden=true; mostrar("vLogin");
+}
 
-// Estado del aporte anual: cuotas, si está al día y cuánto falta para cancelar el año
+function cabecera(nombre, sub, sun){
+  return `<div class="head"><div class="avatar ${sun?"sun":""}">${esc(ini(nombre))}</div>
+    <div class="who"><b>Hola, ${esc(primer(nombre))}</b><span>${esc(sub)}</span></div>
+    <button class="iconbtn" data-salir aria-label="Salir">${I("logout")}</button></div>`;
+}
+
+function render(){
+  mostrar("vMain");
+  const m = $("vMain");
+  if(S.data.tipo==="miembro"){ m.innerHTML = vistaMiembro(); montarMiembro(); return; }
+  const tabs = [["inicio","Inicio","home"],["dirigentes","Dirigentes","users"],["cobrar","Cobrar","cash"]];
+  if(S.data.tipo==="guia") tabs.push(["gestion","Gestión","sliders"],["reportes","Reportes","chart"]);
+  if(!tabs.find(t=>t[0]===S.tab)) S.tab="inicio";
+  const pend = S.data.pendientes.length;
+  $("tabsIn").innerHTML = tabs.map(([id,t,ic])=>`<button class="tab" data-tab="${id}" ${S.tab===id?'aria-current="page"':""}>${I(ic)}<span>${t}</span>${id==="inicio"&&pend?`<span class="badge">${pend}</span>`:""}</button>`).join("");
+  const t = S.data.tesorero;
+  const sub = S.data.tipo==="guia" ? `Guía del área · ${S.data.parroquia}` : `Tesorero · ${S.data.miembros.length} dirigentes a cargo`;
+  let body = "";
+  if(S.tab==="inicio") body = tabInicio();
+  if(S.tab==="dirigentes") body = tabDirigentes();
+  if(S.tab==="cobrar") body = tabCobrar();
+  if(S.tab==="gestion") body = tabGestion();
+  if(S.tab==="reportes") body = tabReportes();
+  m.innerHTML = cabecera(t.nombre, sub, S.data.tipo==="guia") + body;
+  montarTesorero();
+}
+$("tabsIn").onclick = e => { const b=e.target.closest("[data-tab]"); if(!b) return; S.tab=b.dataset.tab; store("aportes_tab_"+S.data.tipo, S.tab); render(); scrollTo({top:0}); };
+
+// ===== Aporte anual =====
 function estadoAporte(a){
-  if(a.meses_vencidos===0) return {cls:"neutral", txt:`Las cuotas empiezan en ${a.mes_desde}.`};
-  if(a.falta_anio<=0) return {cls:"ok", txt:"Año cancelado. ¡Gracias!"};
-  if(a.al_dia) return {cls:"ok", txt: a.adelantado>0 ? `Al día a ${a.mes_actual}, con ${fmt(a.adelantado)} adelantado.` : `Al día a ${a.mes_actual}.`};
-  return {cls:"bad", txt:`Atrasado: debe ${a.cuotas_atrasadas} ${a.cuotas_atrasadas===1?"cuota":"cuotas"} (${fmt(a.atraso)}) a ${a.mes_actual}.`};
+  if(a.meses_vencidos===0) return {cls:"neutral", ic:"clock", txt:`Las cuotas empiezan en ${a.mes_desde}.`};
+  if(a.falta_anio<=0) return {cls:"ok", ic:"award", txt:"¡Año cancelado! Gracias."};
+  if(a.al_dia) return {cls:"ok", ic:"check", txt: a.adelantado>0 ? `Al día a ${a.mes_actual}, con ${fmt(a.adelantado)} adelantado.` : `Al día a ${a.mes_actual}.`};
+  return {cls:"bad", ic:"alert", txt:`Debe ${a.cuotas_atrasadas} ${a.cuotas_atrasadas===1?"cuota":"cuotas"} (${fmt(a.atraso)}) a ${a.mes_actual}.`};
 }
-function aporteHTML(a, conTitulo){
+function aporteHTML(a, propio){
   const n = a.meses_total, inicio = MES_N[a.mes_desde] || 3;
-  const celdas = [], lbls = [];
+  let cel = "";
   for(let i=0;i<n;i++){
     const cls = i < a.cuotas_pagas ? "ok" : (i < a.meses_vencidos ? "bad" : "");
-    celdas.push(`<span class="${cls}" title="${MESES[(inicio-1+i)%12]}"></span>`);
-    lbls.push(`<span>${MESES[(inicio-1+i)%12]}</span>`);
+    cel += `<div class="cuota ${cls}">${cls==="ok"?I("check"):cls==="bad"?I("x"):I("clock")}${MESES[(inicio-1+i)%12]}</div>`;
   }
   const e = estadoAporte(a);
+  let txt = e.txt; if(propio && e.cls==="bad") txt = txt.replace(/^Debe/,"Debés");
   return `
-    ${conTitulo?`<div class="row"><h2>Aporte anual</h2><span class="muted small num">${n} cuotas de ${fmt(a.mensual)}</span></div>`:`<h3>Aporte anual · ${n} cuotas de ${fmt(a.mensual)}</h3>`}
-    <div class="estado ${e.cls}">${e.txt}</div>
-    <div><div class="cuotas" style="grid-template-columns:repeat(${n},1fr)">${celdas.join("")}</div>
-      <div class="cuotas-lbl" style="grid-template-columns:repeat(${n},1fr);margin-top:4px">${lbls.join("")}</div></div>
-    <div class="legend">
-      <span><i class="dot" style="background:var(--ok)"></i>Pagada</span>
-      <span><i class="dot" style="background:var(--bad)"></i>Vencida sin pagar</span>
-      <span><i class="dot" style="background:var(--line)"></i>Por vencer</span>
-    </div>
+    <div class="estado ${e.cls}">${I(e.ic)}<span>${esc(txt)}</span></div>
+    <div class="cuotas">${cel}</div>
     <div class="stats">
-      <div class="stat"><span class="muted small">Compromiso del año</span><b>${fmt(a.anual)}</b></div>
-      <div class="stat"><span class="muted small">Pagado${a.en_revision>0?` (+${fmt(a.en_revision)} en revisión)`:""}</span><b class="paid">${fmt(a.pagado)}</b></div>
-      <div class="stat"><span class="muted small">Falta para cancelar el año</span><b class="${a.falta_anio>0?"debt":"paid"}">${a.falta_anio>0?fmt(a.falta_anio):"Nada"}</b></div>
+      <div class="stat"><span class="muted tiny">Compromiso del año</span><b>${fmt(a.anual)}</b></div>
+      <div class="stat"><span class="muted tiny">Pagado${a.en_revision>0?` · ${fmt(a.en_revision)} en revisión`:""}</span><b class="paid">${fmt(a.pagado)}</b></div>
+      <div class="stat"><span class="muted tiny">Falta para cancelar el año</span><b class="${a.falta_anio>0?"debt":"paid"}">${a.falta_anio>0?fmt(a.falta_anio):"Nada"}</b></div>
     </div>
-    ${a.meses_vencidos>0?`<div class="muted small">A ${a.mes_actual} debería llevar pagado ${fmt(a.debido_a_hoy)} (${a.meses_vencidos} de ${n} cuotas). Las cuotas van de ${a.mes_desde} a ${a.mes_hasta}.</div>`:""}`;
+    ${a.meses_vencidos>0?`<div class="muted small">A ${a.mes_actual} ${propio?"deberías":"debería"} llevar ${fmt(a.debido_a_hoy)} (${a.meses_vencidos} de ${n} cuotas de ${fmt(a.mensual)}). Las cuotas van de ${a.mes_desde} a ${a.mes_hasta}.</div>`:""}`;
+}
+function icConcepto(nombre){
+  const n = nombre.toLowerCase();
+  if(n.startsWith("aporte")) return ["heart",""];
+  return ["gift","sun"];
 }
 function conceptosHTML(cs){
-  return cs.map(r=>`
-    <div class="item"><div class="l"><div style="font-weight:600">${esc(r.nombre)}</div>
-      <div class="muted small">${r.evento_id===null?`${r.cantidad} cuotas vencidas de ${fmt(r.precio)}`:`${plural(r.cantidad,r)} × ${fmt(r.precio)}`} · pagado ${fmt(r.pagado)}${r.pendiente>0?` · ${fmt(r.pendiente)} en revisión`:""}</div></div>
-      <div class="num ${r.saldo>0?"debt":"paid"}">${r.saldo>0?fmt(r.saldo):(r.a_favor>0?`A favor ${fmt(r.a_favor)}`:"Pagado")}</div></div>`).join("");
+  return cs.map(r=>{ const [ic,c]=icConcepto(r.nombre); return `
+    <div class="item"><div class="ic ${c}">${I(ic)}</div><div class="l"><div class="t">${esc(r.nombre)}</div>
+      <div class="muted small">${r.evento_id===null?`${r.cantidad} cuotas vencidas`:`${plural(r.cantidad,r)} × ${fmt(r.precio)}`} · pagado ${fmt(r.pagado)}${r.pendiente>0?` · ${fmt(r.pendiente)} en revisión`:""}</div></div>
+      <div class="num ${r.saldo>0?"debt":"paid"}">${r.saldo>0?fmt(r.saldo):(r.a_favor>0?`+${fmt(r.a_favor)}`:I("check"))}</div></div>`}).join("");
 }
-function pagosHTML(ps){
+function pillEstado(e){return e==="verificado"?`<span class="pill ok">${I("check","sm")}Verificado</span>`:e==="pendiente"?`<span class="pill warn">${I("clock","sm")}En revisión</span>`:`<span class="pill bad">${I("x","sm")}Rechazado</span>`}
+function pagosHTML(ps, reenviar){
   return ps.length ? ps.map(p=>`
-    <div class="item"><div class="l"><div style="font-weight:600">${esc(p.concepto)}</div>
-      <div class="muted small">${p.fecha} · ${p.medio}${p.recibo_nro?` · Recibo N° ${p.recibo_nro}`:""}</div></div>
-      <div style="text-align:right"><div class="num" style="font-weight:700">${fmt(p.monto)}</div>${pillEstado(p.estado)}</div></div>`).join("")
-    : `<div class="muted small">Todavía no hay pagos registrados.</div>`;
+    <div class="item"><div class="ic ${p.estado==="verificado"?"ok":p.estado==="pendiente"?"sun":"bad"}">${I(p.medio==="Efectivo"?"cash":"file")}</div>
+      <div class="l"><div class="t">${esc(p.concepto)}</div>
+      <div class="muted small">${p.fecha} · ${p.medio}${p.recibo_nro?` · Recibo ${p.recibo_nro}`:""}</div>
+      ${reenviar&&p.estado==="verificado"?`<button class="btn ghost sm" data-reenviar="${p.id}">${I("mail","sm")} Reenviar recibo por mail</button>`:""}</div>
+      <div style="text-align:right;display:flex;flex-direction:column;gap:4px;align-items:flex-end"><div class="num" style="font-weight:800">${fmt(p.monto)}</div>${pillEstado(p.estado)}</div></div>`).join("")
+    : `<div class="empty"><div class="ic">${I("clock")}</div>Todavía no hay pagos registrados.</div>`;
 }
-function pillEstado(e){return e==="verificado"?'<span class="pill ok">Verificado</span>':e==="pendiente"?'<span class="pill warn">En revisión</span>':'<span class="pill bad">Rechazado</span>'}
 
-$("pEnviar").onclick = () => ocupado($("pEnviar"), async ()=>{
-  $("pErr").hidden = true;
-  const monto = Number($("pMonto").value), f = $("pArchivo").files[0];
-  try{
-    if(!(monto>0)) throw new Error("Ingresá el monto que transferiste.");
-    if(!f) throw new Error("Adjuntá la foto o el PDF del comprobante.");
-    if(f.size > 10*1024*1024) throw new Error("El archivo pesa más de 10 MB.");
-    const fd = new FormData();
-    fd.append("codigo", CODIGO); fd.append("monto", String(monto));
-    fd.append("evento_id", $("pConcepto").value); fd.append("archivo", f);
-    $("pEnviar").textContent = "Enviando…";
-    await fnComprobantes(fd);
-    $("pMonto").value=""; $("pArchivo").value="";
-    DATA = await rpc("entrar", {p_codigo: CODIGO}); renderMiembro();
-    toast("Comprobante enviado. Te avisamos cuando se verifique.");
-  }catch(e){ $("pErr").textContent = e.message; $("pErr").hidden = false; }
-  finally{ $("pEnviar").textContent = "Enviar comprobante"; }
-});
+// ===== Vista del dirigente =====
+function vistaMiembro(){
+  const d = S.data, c = d.cuenta, m = c.miembro;
+  const chip = c.saldo<=0 ? `<span class="chip ok">${I("check","sm")} Estás al día</span>` : `<span class="chip">${I("clock","sm")} Saldo pendiente</span>`;
+  return `${cabecera(m.nombre, `${d.parroquia} · ${d.anio}`)}
+  <div class="hero">
+    <div class="lbl">Lo que debés hoy</div>
+    <div class="big num">${fmt(c.saldo)}</div>
+    ${chip}
+    ${c.pendiente>0?`<div class="small" style="opacity:.9">Tenés ${fmt(c.pendiente)} en comprobantes esperando que tu tesorero los verifique.</div>`:""}
+    <button class="btn block" data-pagar>${I("upload")} Informar un pago</button>
+  </div>
+  <div class="card"><h2>${I("heart")} Mi aporte anual</h2>${aporteHTML(c.aporte, true)}</div>
+  <div class="card"><h2>${I("tag")} Lo que debo por concepto</h2><div class="list">${conceptosHTML(c.conceptos)}</div></div>
+  <div class="card"><h2>${I("clock")} Mis pagos</h2><div class="list">${pagosHTML(c.pagos)}</div></div>
+  ${d.tesorero?`<div class="card"><div class="item" style="padding:0"><div class="avatar sm">${esc(ini(d.tesorero.nombre))}</div>
+    <div class="l"><div class="muted tiny">Tu tesorero</div><div class="t">${esc(d.tesorero.nombre)}</div></div>
+    <a class="btn wa sm" target="_blank" rel="noopener" href="${waLink(d.tesorero.celular, `Hola ${primer(d.tesorero.nombre)}, soy ${m.nombre}. `)}">${I("msg","sm")} Escribirle</a></div></div>`:""}`;
+}
+function montarMiembro(){
+  $("vMain").onclick = null; $("vMain").onchange = null;
+  $("vMain").querySelector("[data-salir]").onclick = salir;
+  $("vMain").querySelector("[data-pagar]").onclick = hojaPago;
+}
+function hojaPago(){
+  const ev = S.data.eventos;
+  abrirHoja(`<h2>Informar un pago por transferencia</h2>
+    <div class="muted small">Subí la foto o el PDF del comprobante. Tu tesorero lo revisa y te llega el recibo por mail. Si pagaste en efectivo, lo carga tu tesorero.</div>
+    <label>¿Qué estás pagando?<select id="pConcepto"><option value="">Aporte mensual</option>${ev.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("")}</select></label>
+    <label>Monto que transferiste ($)<input id="pMonto" type="number" inputmode="numeric" min="1" placeholder="Ej.: ${Math.round(S.data.cuenta.miembro.aporte_mensual)||10000}"></label>
+    <label class="file" id="pFileBox">${I("upload")}<span id="pFileTxt"><b>Tocá para elegir el comprobante</b><br><span class="small">Foto o PDF</span></span>
+      <input id="pArchivo" type="file" accept="image/*,application/pdf"></label>
+    <div class="err" id="pErr" hidden></div>
+    <div class="actions"><button class="btn soft" data-cerrar>Cancelar</button><button class="btn" id="pEnviar">${I("send")} Enviar</button></div>`,
+  (s, cerrar)=>{
+    const inp = s.querySelector("#pArchivo");
+    inp.onchange = ()=>{ const f=inp.files[0]; s.querySelector("#pFileBox").classList.toggle("has",!!f); s.querySelector("#pFileTxt").innerHTML = f?`<b>${esc(f.name)}</b><br><span class="small">Tocá para cambiarlo</span>`:"<b>Tocá para elegir el comprobante</b>"; };
+    const btn = s.querySelector("#pEnviar"), err = s.querySelector("#pErr");
+    btn.onclick = () => ocupado(btn, async ()=>{
+      err.hidden = true;
+      try{
+        const monto = Number(s.querySelector("#pMonto").value); let f = inp.files[0];
+        if(!(monto>0)) throw new Error("Escribí el monto que transferiste.");
+        if(!f) throw new Error("Elegí la foto o el PDF del comprobante.");
+        btn.innerHTML = "Enviando…";
+        f = await comprimir(f);
+        if(f.size > 10*1024*1024) throw new Error("El archivo pesa más de 10 MB.");
+        const fd = new FormData(); fd.append("codigo",S.codigo); fd.append("monto",String(monto)); fd.append("evento_id", s.querySelector("#pConcepto").value); fd.append("archivo", f);
+        await fnComprobantes(fd);
+        cerrar(); await recargar(); toast("¡Listo! Tu tesorero va a revisar el comprobante.");
+      }catch(e){ err.textContent=e.message; err.hidden=false; btn.innerHTML=`${I("send")} Enviar`; }
+    });
+  });
+}
 
-// ===== Vista tesorero =====
-function renderTesorero(){
-  const d = DATA;
-  $("hdrTitulo").textContent = "Tesorería";
-  $("tNombre").textContent = d.tesorero.nombre + (d.tesorero.es_general ? " · todos los miembros" : "");
-  $("tTotalLbl").textContent = d.tesorero.es_general ? "Adeudado por todos los miembros" : `Adeudado por tus ${d.miembros.length} miembros`;
-  $("tTotal").textContent = fmt(d.miembros.reduce((s,m)=>s+Number(m.saldo),0));
-  $("tCaja").textContent = fmt(d.efectivo_cobrado);
-
+// ===== Tesorero y guía: pestañas =====
+function tabInicio(){
+  const d = S.data;
+  const total = d.miembros.reduce((s,m)=>s+Number(m.saldo),0);
+  const atr = d.miembros.filter(m=>!m.aporte.al_dia).length;
   const pend = d.pendientes;
-  $("tPendCount").hidden = !pend.length;
-  $("tPendCount").textContent = pend.length + (pend.length===1?" pendiente":" pendientes");
-  $("tPend").innerHTML = pend.length ? pend.map(p=>`
-    <div class="item" style="flex-wrap:wrap"><div class="l"><div style="font-weight:600">${esc(p.miembro)}</div>
-      <div class="muted small">${esc(p.concepto)} · ${p.fecha}</div>
-      ${p.tiene_comprobante?`<button class="btn link small" data-ver="${p.id}">Ver comprobante</button>`:`<div class="muted small">Sin archivo adjunto</div>`}</div>
-      <div class="num" style="font-weight:700">${fmt(p.monto)}</div>
-      <div class="actions" style="width:100%"><button class="btn ok" data-ok="${p.id}">Verificar</button><button class="btn bad" data-no="${p.id}">Rechazar</button></div></div>`).join("")
-    : `<div class="muted small">No hay comprobantes para revisar.</div>`;
-
-  const atrasados = d.miembros.filter(m=>m.aporte && !m.aporte.al_dia).length;
-  $("tAtraso").textContent = atrasados ? `${atrasados} de ${d.miembros.length} atrasados en el aporte` : "Todos al día con el aporte";
-  $("tMiembros").innerHTML = d.miembros.map(m=>{
-    const a = m.aporte, e = estadoAporte(a);
-    const pill = a.meses_vencidos===0 ? "" : (a.al_dia ? `<span class="pill ok">Aporte al día</span>` : `<span class="pill bad">Atraso ${fmt(a.atraso)}</span>`);
-    return `<div class="mem-wrap">
-      <button class="mem" data-mem="${m.id}" aria-expanded="false"><div class="l"><div style="font-weight:600">${esc(m.nombre)} ${pill}</div>
-        <div class="muted small">${fmt(a.mensual)}/mes · falta ${fmt(a.falta_anio)} para cancelar el año${d.tesorero.es_general&&m.tesorero?` · ${esc(m.tesorero)}`:""}${m.pendiente>0?` · ${fmt(m.pendiente)} en revisión`:""}</div></div>
-        <div style="text-align:right"><div class="muted small">Debe hoy</div><div class="num ${m.saldo>0?"debt":"paid"}">${m.saldo>0?fmt(m.saldo):"Nada"}</div></div></button>
-      <div class="det" data-det="${m.id}" hidden></div></div>`;
-  }).join("");
-
-  const mOpts = d.miembros.map(m=>`<option value="${m.id}">${esc(m.nombre)}</option>`).join("");
-  for(const id of ["eMiembro","aMiembro"]){ const v=$(id).value; $(id).innerHTML=mOpts; if(v) $(id).value=v; }
-  $("eConcepto").innerHTML = `<option value="">Aporte mensual</option>` + d.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("");
-  const av=$("aEvento").value;
-  $("aEvento").innerHTML = d.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)} (${fmt(e.precio)})</option>`).join("");
-  if(av) $("aEvento").value=av;
-  calcTotal();
+  return `
+  <div class="hero">
+    <div class="lbl">${d.tipo==="guia"?"Deuda de todos los dirigentes hoy":"Deuda de tus dirigentes hoy"}</div>
+    <div class="big num">${fmt(total)}</div>
+    <span class="chip">${atr?`${atr} de ${d.miembros.length} atrasados en el aporte`:"Todos al día con el aporte"}</span>
+  </div>
+  <div class="card">
+    <div class="row"><h2>${I("file")} Comprobantes para revisar</h2>${pend.length?`<span class="pill warn">${pend.length}</span>`:""}</div>
+    <div class="list" id="tPend">${pend.length ? pend.map(p=>`
+      <div class="item" style="flex-wrap:wrap"><div class="avatar sm">${esc(ini(p.miembro))}</div>
+        <div class="l"><div class="t">${esc(p.miembro)}</div><div class="muted small">${esc(p.concepto)} · ${p.fecha}</div></div>
+        <div class="num" style="font-weight:900;font-size:1.1rem">${fmt(p.monto)}</div>
+        <div class="actions" style="width:100%">
+          ${p.tiene_comprobante?`<button class="btn soft sm" data-ver="${p.id}">${I("file","sm")} Ver</button>`:`<span class="muted small" style="align-self:center">Sin archivo</span>`}
+          <button class="btn ok sm" data-ok="${p.id}">${I("check","sm")} Aprobar</button>
+          <button class="btn bad sm" data-no="${p.id}">${I("x","sm")} Rechazar</button></div></div>`).join("")
+      : `<div class="empty"><div class="ic ok">${I("check")}</div>No hay comprobantes pendientes.</div>`}</div>
+  </div>
+  <div class="card"><div class="row"><div><div class="muted small">Efectivo que cobraste</div><div class="num" style="font-weight:900;font-size:1.3rem">${fmt(d.efectivo_cobrado)}</div></div>
+    <button class="btn soft sm" data-tabgo="cobrar">${I("cash","sm")} Cobrar efectivo</button></div></div>`;
 }
-async function recargar(){ DATA = await rpc("entrar", {p_codigo: CODIGO}); renderTesorero(); }
+function tabDirigentes(){
+  const d = S.data;
+  let ms = d.miembros;
+  if(S.filtro==="atrasados") ms = ms.filter(m=>!m.aporte.al_dia);
+  if(S.filtro==="aldia") ms = ms.filter(m=>m.aporte.al_dia);
+  if(S.busca) ms = ms.filter(m=>m.nombre.toLowerCase().includes(S.busca.toLowerCase()));
+  const f = (id,t)=>`<button data-filtro="${id}" aria-pressed="${S.filtro===id}">${t}</button>`;
+  return `<div class="card">
+    <h2>${I("users")} ${d.tipo==="guia"?"Todos los dirigentes":"Tus dirigentes"}</h2>
+    <div class="search">${I("search")}<input id="busca" placeholder="Buscar por nombre" value="${esc(S.busca)}"></div>
+    <div class="filters">${f("todos","Todos")}${f("atrasados","Atrasados")}${f("aldia","Al día")}</div>
+    <div class="list" id="tMiembros">${ms.length ? ms.map(m=>{
+      const a=m.aporte;
+      const pill = a.meses_vencidos===0?"":(a.al_dia?`<span class="pill ok">Al día</span>`:`<span class="pill bad">Atraso ${fmt(a.atraso)}</span>`);
+      return `<div class="mem-wrap"><button class="mem" data-mem="${m.id}" aria-expanded="false">
+        <div class="avatar sm">${esc(ini(m.nombre))}</div>
+        <div class="l" style="flex:1;min-width:0"><div class="t" style="font-weight:800">${esc(m.nombre)} ${pill}</div>
+          <div class="muted small">${fmt(a.mensual)}/mes · falta ${fmt(a.falta_anio)} del año${d.tipo==="guia"?` · ${m.tesorero?esc(m.tesorero):"sin tesorero"}`:""}</div></div>
+        <div style="text-align:right"><div class="muted tiny">Debe hoy</div><div class="num ${m.saldo>0?"debt":"paid"}">${m.saldo>0?fmt(m.saldo):"Nada"}</div></div>
+        <span class="chev">${I("chev")}</span></button><div class="det" data-det="${m.id}" hidden></div></div>`}).join("")
+      : `<div class="empty"><div class="ic">${I("search")}</div>No hay dirigentes con ese filtro.</div>`}</div></div>`;
+}
+function tabCobrar(){
+  const d = S.data;
+  const mOpts = d.miembros.map(m=>`<option value="${m.id}">${esc(m.nombre)}</option>`).join("");
+  return `
+  <div class="card"><h2>${I("cash")} Registrar pago en efectivo</h2>
+    <div class="muted small">Se aprueba en el momento y al dirigente le llega el recibo por mail.</div>
+    <label>Dirigente<select id="eMiembro">${mOpts}</select></label>
+    <div class="grid2"><label>Concepto<select id="eConcepto"><option value="">Aporte mensual</option>${d.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)}</option>`).join("")}</select></label>
+    <label>Monto ($)<input id="eMonto" type="number" inputmode="numeric" min="1" placeholder="15000"></label></div>
+    <button class="btn block" id="eGuardar">${I("check")} Registrar y generar recibo</button></div>
+  <div class="card"><h2>${I("gift")} Entregar un evento</h2>
+    <div class="muted small">Locro, lotería, agendas, bonos: se suma a la deuda del dirigente.</div>
+    <label>Dirigente<select id="aMiembro">${mOpts}</select></label>
+    <label>Evento<select id="aEvento">${d.eventos.map(e=>`<option value="${e.id}">${esc(e.nombre)} · ${fmt(e.precio)}</option>`).join("")}</select></label>
+    <div class="grid2"><label>Cantidad<input id="aCant" type="number" inputmode="numeric" min="1" value="1"></label>
+    <label>Total<input id="aTotal" readonly></label></div>
+    <button class="btn block" id="aGuardar">${I("plus")} Asignar</button></div>`;
+}
 
+// ===== Gestión (solo guía) =====
+function tabGestion(){
+  const p = S.panel; if(!p) return `<div class="card">No se pudo cargar la gestión.</div>`;
+  const tes = p.tesoreros, act = tes.filter(t=>t.activo);
+  const nomTes = id => (tes.find(t=>t.id===id)||{}).nombre;
+  const sinTes = p.miembros.filter(m=>m.activo && !m.tesorero_id).length;
+  const sec = {};
+  sec.tesoreros = `
+  <div class="card">
+    <div class="row"><h2>${I("award")} Tesoreros</h2><button class="btn sm" data-nuevo-tes>${I("plus","sm")} Nuevo</button></div>
+    <div class="list">${tes.map(t=>`
+      <div class="item" style="flex-wrap:wrap;${t.activo?"":"opacity:.6"}"><div class="avatar sm ${t.rol==="guia"?"sun":""}">${esc(ini(t.nombre))}</div>
+        <div class="l"><div class="t">${esc(t.nombre)} ${t.rol==="guia"?`<span class="pill neutral">Guía${t.es_vos?" (vos)":""}</span>`:""}${t.activo?"":` <span class="pill off">De baja</span>`}</div>
+        <div class="muted small">${t.miembros} dirigentes · ${t.pendientes} comprobantes pendientes · efectivo ${fmt(t.efectivo)}</div></div>
+        <div class="actions" style="width:100%">
+          ${t.activo?`<button class="btn soft sm" data-asig="${t.id}">${I("users","sm")} Dirigentes a cargo</button>
+          <button class="btn soft sm" data-link-tes="${t.id}">${I("msg","sm")} Enviar acceso</button>`:""}
+          <button class="btn ghost sm" data-edit-tes="${t.id}">${I("edit","sm")} Editar</button>
+          ${t.rol!=="guia"?`<button class="btn ghost sm" data-baja-tes="${t.id}" data-activo="${t.activo}">${I("power","sm")} ${t.activo?"Dar de baja":"Reactivar"}</button>`:""}
+        </div></div>`).join("")}</div>
+  </div>`;
+  sec.dirigentes = `
+  <div class="card">
+    <div class="row"><h2>${I("users")} Dirigentes</h2><button class="btn sm" data-nuevo-mem>${I("plus","sm")} Nuevo</button></div>
+    ${sinTes?`<div class="estado bad">${I("alert")}<span>${sinTes} ${sinTes===1?"dirigente sin tesorero":"dirigentes sin tesorero"} asignado</span></div>`:""}
+    <div class="list">${p.miembros.map(m=>`
+      <div class="item" style="flex-wrap:wrap;${m.activo?"":"opacity:.6"}"><div class="avatar sm">${esc(ini(m.nombre))}</div>
+        <div class="l"><div class="t">${esc(m.nombre)}${m.activo?"":` <span class="pill off">De baja</span>`}${m.email?"":` <span class="pill warn">Sin mail</span>`}</div>
+        <div class="muted small">${fmt(m.aporte_mensual)}/mes</div></div>
+        ${m.activo?`<label style="flex:1 1 100%">Tesorero a cargo<select data-cambiar-tes="${m.id}"><option value="">Sin tesorero</option>${act.map(t=>`<option value="${t.id}" ${m.tesorero_id===t.id?"selected":""}>${esc(t.nombre)}</option>`).join("")}</select></label>`:""}
+        <div class="actions" style="width:100%">
+          <button class="btn ghost sm" data-edit-mem="${m.id}">${I("edit","sm")} Editar</button>
+          ${m.activo?`<button class="btn ghost sm" data-link-mem="${m.id}">${I("msg","sm")} Enviar acceso</button>`:""}
+          <button class="btn ghost sm" data-baja-mem="${m.id}" data-activo="${m.activo}">${I("power","sm")} ${m.activo?"Dar de baja":"Reactivar"}</button>
+        </div></div>`).join("")}</div>
+  </div>`;
+  sec.eventos = `
+  <div class="card">
+    <div class="row"><h2>${I("gift")} Eventos</h2><button class="btn sm" data-nuevo-ev>${I("plus","sm")} Nuevo</button></div>
+    <div class="list">${p.eventos.map(e=>`
+      <div class="item" style="flex-wrap:wrap;${e.activo?"":"opacity:.6"}"><div class="ic sun">${I("gift")}</div>
+        <div class="l"><div class="t">${esc(e.nombre)}${e.activo?"":` <span class="pill off">Cerrado</span>`}</div>
+        <div class="muted small">${fmt(e.precio)} por ${esc(e.unidad)} · ${e.entregado} ${esc(e.unidad_plural)} entregados · cobrado ${fmt(e.cobrado)} de ${fmt(e.cargo)}</div></div>
+        <div class="actions" style="width:100%"><button class="btn ghost sm" data-edit-ev="${e.id}">${I("edit","sm")} Editar</button>
+          <button class="btn ghost sm" data-baja-ev="${e.id}" data-activo="${e.activo}">${I("power","sm")} ${e.activo?"Cerrar":"Reabrir"}</button></div></div>`).join("")}</div>
+  </div>`;
+  sec.mails = `
+  <div class="card">
+    <h2>${I("mail")} Recibos y recordatorios</h2>
+    <div class="muted small">Cada vez que se aprueba un pago, al dirigente le llega el recibo por mail. Los días 1 y 16 de cada mes, a los que deben les llega un recordatorio con su estado de cuenta.</div>
+    <div class="grid2"><input id="mailPrueba" type="email" placeholder="Tu mail para probar" value="${esc(S.data.tesorero.email||"")}"><button class="btn soft" id="btnProbar">${I("send")} Enviar prueba</button></div>
+    <button class="btn soft block" id="btnRecordar">${I("clock")} Enviar recordatorio ahora a los que deben</button>
+    <button class="btn ghost" id="btnHist">${I("clock","sm")} Ver últimos envíos</button>
+    <div class="list" id="histMails" hidden></div>
+  </div>`;
+  sec.traspaso = `
+  <div class="card">
+    <h2>${I("award")} Dejar de ser guía</h2>
+    <div class="muted small">Pasale el rol de guía a otro tesorero. Esa persona va a poder ver y gestionar todo, y vos quedás como tesorero común (después te puede dar de baja).</div>
+    <label>Nuevo guía<select id="nuevoGuia">${act.filter(t=>!t.es_vos).map(t=>`<option value="${t.id}">${esc(t.nombre)}</option>`).join("")}</select></label>
+    <button class="btn bad block" id="btnTraspaso">${I("award")} Pasar el rol de guía</button>
+  </div>`;
+  const subs = [["tesoreros","Tesoreros"],["dirigentes","Dirigentes"],["eventos","Eventos"],["mails","Mails"],["traspaso","Traspaso"]];
+  if(!sec[S.sub]) S.sub = "tesoreros";
+  return `<div class="filters" style="position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0">${subs.map(([id,t])=>`<button data-sub="${id}" aria-pressed="${S.sub===id}">${t}</button>`).join("")}</div>` + sec[S.sub];
+}
+function tabReportes(){
+  const p = S.panel; if(!p) return `<div class="card">No se pudo cargar.</div>`;
+  const r = p.reportes;
+  const tes = p.tesoreros.filter(t=>t.activo && (t.rol!=="guia" || t.miembros>0 || t.efectivo>0));
+  const pct = (a,b)=> b>0 ? Math.min(100, Math.round(a/b*100)) : 0;
+  return `
+  <div class="kpis">
+    <div class="kpi"><span class="k">Recaudado en el año</span><span class="v paid">${fmt(r.cobrado_aportes + r.cobrado_eventos)}</span></div>
+    <div class="kpi"><span class="k">Deuda vencida hoy</span><span class="v debt">${fmt(r.adeudado_hoy)}</span></div>
+    <div class="kpi"><span class="k">Atrasados en el aporte</span><span class="v">${r.atrasados} <span class="muted small">de ${r.dirigentes}</span></span></div>
+    <div class="kpi"><span class="k">Comprobantes sin revisar</span><span class="v">${r.pendientes} <span class="muted small">${fmt(r.pendientes_monto)}</span></span></div>
+  </div>
+  <div class="card"><h2>${I("heart")} Aporte anual</h2>
+    <div class="row small"><span class="muted">Cobrado ${fmt(r.cobrado_aportes)} de ${fmt(r.aporte_comprometido)}</span><b>${pct(r.cobrado_aportes, r.aporte_comprometido)}%</b></div>
+    <div class="prog"><span style="width:${pct(r.cobrado_aportes, r.aporte_comprometido)}%"></span></div>
+    <div class="muted small">Falta cobrar ${fmt(r.aporte_falta_anio)} para cerrar el año. Van ${r.meses_vencidos} de ${r.cantidad_meses} cuotas.</div></div>
+  <div class="card"><h2>${I("gift")} Eventos</h2><div class="list">${p.eventos.filter(e=>e.cargo>0).map(e=>`
+    <div class="item" style="flex-direction:column;align-items:stretch;gap:6px"><div class="row"><span class="t">${esc(e.nombre)}</span><span class="small muted num">${fmt(e.cobrado)} / ${fmt(e.cargo)}</span></div>
+    <div class="prog"><span style="width:${pct(e.cobrado,e.cargo)}%"></span></div></div>`).join("") || `<div class="muted small">Todavía no se entregaron eventos.</div>`}</div></div>
+  <div class="card"><h2>${I("award")} Por tesorero</h2><div class="tablewrap"><table class="t">
+    <thead><tr><th>Tesorero</th><th class="n">Dirigentes</th><th class="n">Pendientes</th><th class="n">Efectivo</th></tr></thead>
+    <tbody>${tes.map(t=>`<tr><td>${esc(t.nombre)}</td><td class="n">${t.miembros}</td><td class="n">${t.pendientes}</td><td class="n">${fmt(t.efectivo)}</td></tr>`).join("")}</tbody></table></div>
+    ${r.sin_tesorero?`<div class="estado bad">${I("alert")}<span>${r.sin_tesorero} dirigentes sin tesorero</span></div>`:""}</div>
+  <div class="card"><h2>${I("cash")} Por medio de pago</h2>
+    <div class="stats"><div class="stat"><span class="muted tiny">Transferencia</span><b>${fmt(r.cobrado_transferencia)}</b></div>
+    <div class="stat"><span class="muted tiny">Efectivo</span><b>${fmt(r.cobrado_efectivo)}</b></div>
+    <div class="stat"><span class="muted tiny">Eventos</span><b>${fmt(r.cobrado_eventos)}</b></div></div></div>`;
+}
+
+// ===== Recibo =====
 function textoRecibo(r){
   const det = r.cuenta.conceptos.filter(c=>c.saldo>0).map(c=>`• ${c.nombre}: ${fmt(c.saldo)}`).join("\n");
-  return `${r.parroquia} · Recibo N° ${r.recibo_nro}\n${r.miembro}\nFecha: ${r.fecha} · ${r.medio}\nConcepto: ${r.concepto}\nMonto recibido: ${fmt(r.monto)}\n\nSaldo pendiente: ${fmt(r.cuenta.saldo)}` +
+  return `*${r.parroquia}* · Recibo N° ${r.recibo_nro}\n${r.miembro}\nFecha: ${r.fecha} · ${r.medio}\nConcepto: ${r.concepto}\nMonto recibido: *${fmt(r.monto)}*\n\nSaldo pendiente: ${fmt(r.cuenta.saldo)}` +
     (det ? "\n"+det : "\n¡Estás al día! Gracias.") +
     `\n\nAporte anual: ${estadoAporte(r.cuenta.aporte).txt}\nFalta para cancelar el año: ${fmt(r.cuenta.aporte.falta_anio)}` +
     `\n\nTu cuenta y carga de comprobantes:\n${linkPersonal(r.cuenta.miembro.codigo)}`;
 }
-function mostrarRecibo(r){
+function hojaRecibo(r){
   const txt = textoRecibo(r);
-  $("tRecibo").textContent = txt;
-  $("tWa").href = waLink(r.celular, txt);
-  $("tReciboCard").hidden = false;
-  $("tReciboCard").scrollIntoView({behavior:"smooth",block:"nearest"});
+  abrirHoja(`<div class="estado ok">${I("check")}<span>Pago aprobado · Recibo N° ${r.recibo_nro}</span></div>
+    <div class="muted small">${r.email?`${I("mail","sm")} El recibo se envía solo por mail a <b>${esc(r.email)}</b>.`:`${I("alert","sm")} Este dirigente no tiene mail cargado: pedile al guía que lo agregue.`}</div>
+    <div class="receipt">${esc(txt)}</div>
+    <div class="actions">${r.celular?`<a class="btn wa" target="_blank" rel="noopener" href="${waLink(r.celular, txt)}">${I("msg")} Enviar por WhatsApp</a>`:""}
+      <button class="btn soft" data-copiar>${I("copy")} Copiar</button></div>
+    <button class="btn ghost" data-cerrar>Cerrar</button>`,
+  (s)=>{ s.querySelector("[data-copiar]").onclick = async ()=>{ try{await navigator.clipboard.writeText(txt);toast("Recibo copiado")}catch(_){toast("No se pudo copiar")} }; });
+}
+function hojaLink(nombre, celular, codigo, esTesorero){
+  const link = linkPersonal(codigo);
+  const msg = esTesorero
+    ? `Hola ${primer(nombre)}, este es tu acceso como tesorero a la app de aportes. No lo compartas:\n${link}`
+    : `Hola ${primer(nombre)}, este es tu link personal para ver tu cuenta de aportes y subir comprobantes. No lo compartas:\n${link}`;
+  abrirHoja(`<h2>Acceso de ${esc(nombre)}</h2>
+    <div class="receipt" style="word-break:break-all">${esc(link)}</div>
+    <div class="muted small">Código: <b>${esc(codigo)}</b>. Si alguien más lo conoce, generá uno nuevo: el anterior deja de funcionar.</div>
+    <div class="actions">${celular?`<a class="btn wa" target="_blank" rel="noopener" href="${waLink(celular,msg)}">${I("msg")} Enviar por WhatsApp</a>`:""}
+      <button class="btn soft" data-copiar>${I("copy")} Copiar link</button></div>
+    <button class="btn ghost" data-regenerar>${I("key","sm")} Generar código nuevo</button>
+    <button class="btn ghost" data-cerrar>Cerrar</button>`,
+  (s, cerrar)=>{
+    s.querySelector("[data-copiar]").onclick = async ()=>{ try{await navigator.clipboard.writeText(link);toast("Link copiado")}catch(_){toast("No se pudo copiar")} };
+    s.querySelector("[data-regenerar]").onclick = async ()=>{
+      cerrar();
+      if(!await confirmar("¿Generar código nuevo?", `El link actual de ${esc(nombre)} va a dejar de funcionar y vas a tener que mandarle el nuevo.`, "Generar")) return;
+      try{
+        const tipo = esTesorero?"tesorero":"miembro";
+        const lista = esTesorero?S.panel.tesoreros:S.panel.miembros;
+        const it = lista.find(x=>x.codigo===codigo);
+        const nuevo = await rpc("regenerar_codigo",{p_codigo:S.codigo,p_tipo:tipo,p_id:it.id});
+        if(codigo===S.codigo){ S.codigo = nuevo; store("aportes_codigo", nuevo); }
+        await recargar(); hojaLink(nombre, celular, nuevo, esTesorero);
+      }catch(e){ toast(e.message) }
+    };
+  });
 }
 
-$("tPend").onclick = async e => {
-  const b = e.target.closest("button"); if(!b) return;
-  if(b.dataset.ver){
-    await ocupado(b, async ()=>{
-      try{
-        const {url} = await fnComprobantes({accion:"ver", codigo:CODIGO, pago_id:Number(b.dataset.ver)});
-        const a = document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener";
-        a.className="btn link small"; a.textContent="Abrir comprobante ↗";
-        b.replaceWith(a);
-      }catch(err){ toast(err.message) }
-    });
-  }
-  if(b.dataset.ok){
-    await ocupado(b, async ()=>{
-      try{ const r = await rpc("verificar_pago",{p_codigo:CODIGO,p_pago:Number(b.dataset.ok),p_aprobar:true});
-        await recargar(); mostrarRecibo(r); toast("Pago verificado"); }
-      catch(err){ toast(err.message) }
-    });
-  }
-  if(b.dataset.no){
-    if(b.dataset.confirm!=="1"){ b.dataset.confirm="1"; b.textContent="¿Seguro? Tocá de nuevo"; return; }
-    await ocupado(b, async ()=>{
-      try{ await rpc("verificar_pago",{p_codigo:CODIGO,p_pago:Number(b.dataset.no),p_aprobar:false});
-        await recargar(); toast("Comprobante rechazado. Avisale al miembro."); }
-      catch(err){ toast(err.message) }
-    });
-  }
-};
+// ===== Formularios de gestión =====
+function hojaTesorero(t){
+  abrirHoja(`<h2>${t?"Editar tesorero":"Nuevo tesorero"}</h2>
+    <label>Nombre y apellido<input id="fNom" value="${esc(t?.nombre||"")}"></label>
+    <div class="grid2"><label>Celular<input id="fCel" inputmode="tel" placeholder="381 555 0101" value="${esc(t?.celular||"")}"></label>
+    <label>Mail<input id="fMail" type="email" value="${esc(t?.email||"")}"></label></div>
+    <div class="err" id="fErr" hidden></div>
+    <div class="actions"><button class="btn soft" data-cerrar>Cancelar</button><button class="btn" id="fOk">${I("check")} Guardar</button></div>`,
+  (s, cerrar)=>{ const b=s.querySelector("#fOk"); b.onclick=()=>ocupado(b, async()=>{
+    try{ const r = await rpc("guardar_tesorero",{p_codigo:S.codigo,p_id:t?.id??null,p_nombre:s.querySelector("#fNom").value,p_celular:s.querySelector("#fCel").value,p_email:s.querySelector("#fMail").value});
+      cerrar(); await recargar(); toast("Tesorero guardado"); if(!t) hojaLink(r.nombre, r.celular, r.codigo, true);
+    }catch(e){ const er=s.querySelector("#fErr"); er.textContent=e.message; er.hidden=false; } }); });
+}
+function hojaMiembro(m){
+  const act = S.panel.tesoreros.filter(t=>t.activo);
+  abrirHoja(`<h2>${m?"Editar dirigente":"Nuevo dirigente"}</h2>
+    <label>Nombre y apellido<input id="fNom" value="${esc(m?.nombre||"")}"></label>
+    <div class="grid2"><label>Celular<input id="fCel" inputmode="tel" placeholder="381 555 0101" value="${esc(m?.celular||"")}"></label>
+    <label>Mail (para recibos)<input id="fMail" type="email" value="${esc(m?.email||"")}"></label></div>
+    <div class="grid2"><label>Aporte mensual ($)<input id="fAp" type="number" inputmode="numeric" min="0" value="${m?Math.round(m.aporte_mensual):""}"></label>
+    <label>Tesorero<select id="fTes"><option value="">Sin tesorero</option>${act.map(t=>`<option value="${t.id}" ${m?.tesorero_id===t.id?"selected":""}>${esc(t.nombre)}</option>`).join("")}</select></label></div>
+    <div class="err" id="fErr" hidden></div>
+    <div class="actions"><button class="btn soft" data-cerrar>Cancelar</button><button class="btn" id="fOk">${I("check")} Guardar</button></div>`,
+  (s, cerrar)=>{ const b=s.querySelector("#fOk"); b.onclick=()=>ocupado(b, async()=>{
+    try{ const tes = s.querySelector("#fTes").value;
+      const r = await rpc("guardar_miembro",{p_codigo:S.codigo,p_id:m?.id??null,p_nombre:s.querySelector("#fNom").value,p_celular:s.querySelector("#fCel").value,p_email:s.querySelector("#fMail").value,p_tesorero:tes?Number(tes):null,p_aporte:Number(s.querySelector("#fAp").value)});
+      cerrar(); await recargar(); toast("Dirigente guardado"); if(!m) hojaLink(r.nombre, r.celular, r.codigo, false);
+    }catch(e){ const er=s.querySelector("#fErr"); er.textContent=e.message; er.hidden=false; } }); });
+}
+function hojaEvento(e){
+  abrirHoja(`<h2>${e?"Editar evento":"Nuevo evento"}</h2>
+    <label>Nombre<input id="fNom" placeholder="Ej.: Locro 9 de Julio" value="${esc(e?.nombre||"")}"></label>
+    <div class="grid2"><label>Se vende por (singular)<input id="fU" placeholder="porción, número, bono" value="${esc(e?.unidad||"")}"></label>
+    <label>Plural<input id="fUP" placeholder="porciones, números, bonos" value="${esc(e?.unidad_plural||"")}"></label></div>
+    <label>Precio por unidad ($)<input id="fP" type="number" inputmode="numeric" min="0" value="${e?Math.round(e.precio):""}"></label>
+    ${e?`<div class="muted small">Si cambiás el precio, vale para las próximas entregas. Lo ya entregado mantiene su precio.</div>`:""}
+    <div class="err" id="fErr" hidden></div>
+    <div class="actions"><button class="btn soft" data-cerrar>Cancelar</button><button class="btn" id="fOk">${I("check")} Guardar</button></div>`,
+  (s, cerrar)=>{ const b=s.querySelector("#fOk"); b.onclick=()=>ocupado(b, async()=>{
+    try{ await rpc("guardar_evento",{p_codigo:S.codigo,p_id:e?.id??null,p_nombre:s.querySelector("#fNom").value,p_unidad:s.querySelector("#fU").value,p_unidad_plural:s.querySelector("#fUP").value,p_precio:Number(s.querySelector("#fP").value)});
+      cerrar(); await recargar(); toast("Evento guardado");
+    }catch(er){ const x=s.querySelector("#fErr"); x.textContent=er.message; x.hidden=false; } }); });
+}
+function hojaAsignar(t){
+  const ms = S.panel.miembros.filter(m=>m.activo);
+  const nom = id => (S.panel.tesoreros.find(x=>x.id===id)||{}).nombre;
+  abrirHoja(`<h2>Dirigentes a cargo de ${esc(t.nombre)}</h2>
+    <div class="muted small">Marcá los que quedan a su cargo. Si marcás uno que tenía otro tesorero, pasa a ${esc(primer(t.nombre))}.</div>
+    <div class="list">${ms.map(m=>`<label class="check"><input type="checkbox" value="${m.id}" ${m.tesorero_id===t.id?"checked":""}>
+      <span style="flex:1">${esc(m.nombre)}<br><span class="muted tiny">${m.tesorero_id?(m.tesorero_id===t.id?"A su cargo":"Ahora con "+esc(nom(m.tesorero_id))):"Sin tesorero"}</span></span></label>`).join("")}</div>
+    <div class="err" id="fErr" hidden></div>
+    <div class="actions"><button class="btn soft" data-cerrar>Cancelar</button><button class="btn" id="fOk">${I("check")} Guardar</button></div>`,
+  (s, cerrar)=>{ const b=s.querySelector("#fOk"); b.onclick=()=>ocupado(b, async()=>{
+    try{
+      const cambios = [];
+      s.querySelectorAll("input[type=checkbox]").forEach(cb=>{
+        const m = ms.find(x=>x.id===Number(cb.value));
+        if(cb.checked && m.tesorero_id!==t.id) cambios.push([m.id, t.id]);
+        if(!cb.checked && m.tesorero_id===t.id) cambios.push([m.id, null]);
+      });
+      for(const [mid, tid] of cambios) await rpc("asignar_tesorero",{p_codigo:S.codigo,p_miembro:mid,p_tesorero:tid});
+      cerrar(); await recargar(); toast(cambios.length?`Listo, ${cambios.length} ${cambios.length===1?"cambio":"cambios"}`:"Sin cambios");
+    }catch(e){ const er=s.querySelector("#fErr"); er.textContent=e.message; er.hidden=false; } }); });
+}
 
-$("tMiembros").onclick = async e => {
-  const b = e.target.closest("[data-mem]"); if(!b) return;
+// ===== Eventos de las pantallas =====
+function calcTotal(){
+  const ev = (S.data.eventos||[]).find(e=>String(e.id)===$("aEvento")?.value);
+  if($("aTotal")) $("aTotal").value = ev ? fmt((Number($("aCant").value)||0)*ev.precio) : "";
+}
+function montarTesorero(){
+  const m = $("vMain");
+  m.querySelector("[data-salir]").onclick = salir;
+  m.onclick = async e => {
+    const b = e.target.closest("button,[data-mem]"); if(!b) return;
+    const ds = b.dataset;
+    if(ds.tabgo){ S.tab=ds.tabgo; render(); return; }
+    if(ds.ver) return ocupado(b, async()=>{ try{ const {url} = await fnComprobantes({accion:"ver",codigo:S.codigo,pago_id:Number(ds.ver)});
+        const a=document.createElement("a"); a.href=url; a.target="_blank"; a.rel="noopener"; a.className="btn soft sm"; a.innerHTML=`${I("file","sm")} Abrir ↗`; b.replaceWith(a); a.click(); }catch(er){ toast(er.message) } });
+    if(ds.ok) return ocupado(b, async()=>{ try{ const r = await rpc("verificar_pago",{p_codigo:S.codigo,p_pago:Number(ds.ok),p_aprobar:true}); await recargar(); hojaRecibo(r); }catch(er){ toast(er.message) } });
+    if(ds.no){ if(!await confirmar("¿Rechazar el comprobante?","El pago no se suma a la cuenta del dirigente. Avisale por qué lo rechazaste.","Rechazar")) return;
+      return ocupado(b, async()=>{ try{ await rpc("verificar_pago",{p_codigo:S.codigo,p_pago:Number(ds.no),p_aprobar:false}); await recargar(); toast("Comprobante rechazado"); }catch(er){ toast(er.message) } }); }
+    if(ds.filtro){ S.filtro=ds.filtro; render(); return; }
+    if(ds.sub){ S.sub=ds.sub; render(); scrollTo({top:0}); return; }
+    if(ds.reenviar) return ocupado(b, async()=>{ try{ await rpc("reenviar_recibo",{p_codigo:S.codigo,p_pago:Number(ds.reenviar)}); toast("Recibo reenviado por mail"); }catch(er){ toast(er.message) } });
+    if(ds.mem!==undefined && b.classList.contains("mem")) return abrirDetalle(b);
+    // Gestión
+    const P = S.panel;
+    if(ds.nuevoTes!==undefined) return hojaTesorero(null);
+    if(ds.editTes) return hojaTesorero(P.tesoreros.find(x=>x.id==ds.editTes));
+    if(ds.asig) return hojaAsignar(P.tesoreros.find(x=>x.id==ds.asig));
+    if(ds.linkTes){ const t=P.tesoreros.find(x=>x.id==ds.linkTes); return hojaLink(t.nombre,t.celular,t.codigo,true); }
+    if(ds.bajaTes){ const t=P.tesoreros.find(x=>x.id==ds.bajaTes), act = ds.activo==="true";
+      if(act && !await confirmar(`¿Dar de baja a ${t.nombre}?`, `Su código deja de funcionar y sus ${t.miembros} dirigentes quedan sin tesorero hasta que los asignes a otro.`, "Dar de baja")) return;
+      return ocupado(b, async()=>{ try{ const r=await rpc("set_tesorero_activo",{p_codigo:S.codigo,p_id:t.id,p_activo:!act}); await recargar(); toast(act?`Dado de baja. ${r.liberados} dirigentes quedaron sin tesorero.`:"Reactivado"); }catch(er){ toast(er.message) } }); }
+    if(ds.nuevoMem!==undefined) return hojaMiembro(null);
+    if(ds.editMem) return hojaMiembro(P.miembros.find(x=>x.id==ds.editMem));
+    if(ds.linkMem){ const x=P.miembros.find(y=>y.id==ds.linkMem); return hojaLink(x.nombre,x.celular,x.codigo,false); }
+    if(ds.bajaMem){ const x=P.miembros.find(y=>y.id==ds.bajaMem), act = ds.activo==="true";
+      if(act && !await confirmar(`¿Dar de baja a ${x.nombre}?`, "Deja de aparecer en las listas, no recibe recordatorios y su link deja de funcionar. Su historial se guarda y lo podés reactivar.", "Dar de baja")) return;
+      return ocupado(b, async()=>{ try{ await rpc("set_miembro_activo",{p_codigo:S.codigo,p_id:x.id,p_activo:!act}); await recargar(); toast(act?"Dirigente dado de baja":"Dirigente reactivado"); }catch(er){ toast(er.message) } }); }
+    if(ds.nuevoEv!==undefined) return hojaEvento(null);
+    if(ds.editEv) return hojaEvento(P.eventos.find(x=>x.id==ds.editEv));
+    if(ds.bajaEv){ const act = ds.activo==="true";
+      return ocupado(b, async()=>{ try{ await rpc("set_evento_activo",{p_codigo:S.codigo,p_id:Number(ds.bajaEv),p_activo:!act}); await recargar(); toast(act?"Evento cerrado: ya no se puede entregar":"Evento reabierto"); }catch(er){ toast(er.message) } }); }
+  };
+  m.onchange = async e => {
+    const sel = e.target.closest("[data-cambiar-tes]"); if(!sel) return;
+    try{ await rpc("asignar_tesorero",{p_codigo:S.codigo,p_miembro:Number(sel.dataset.cambiarTes),p_tesorero:sel.value?Number(sel.value):null}); await recargar(); toast("Tesorero asignado"); }catch(er){ toast(er.message) }
+  };
+  const busca = $("busca");
+  if(busca){ busca.oninput = ()=>{ S.busca = busca.value; const pos = busca.selectionStart; render(); const nb=$("busca"); nb.focus(); nb.setSelectionRange(pos,pos); }; }
+  if($("aEvento")){ $("aEvento").onchange=calcTotal; $("aCant").oninput=calcTotal; calcTotal(); }
+  if($("eGuardar")) $("eGuardar").onclick = () => ocupado($("eGuardar"), async ()=>{
+    const monto = Number($("eMonto").value); if(!(monto>0)){ toast("Escribí el monto recibido"); return; }
+    try{ const r = await rpc("registrar_efectivo",{p_codigo:S.codigo,p_miembro:Number($("eMiembro").value),p_evento:$("eConcepto").value?Number($("eConcepto").value):null,p_monto:monto});
+      await recargar(); hojaRecibo(r); }catch(er){ toast(er.message) }
+  });
+  if($("aGuardar")) $("aGuardar").onclick = () => ocupado($("aGuardar"), async ()=>{
+    const cant = Number($("aCant").value); if(!(cant>0)){ toast("Escribí una cantidad"); return; }
+    const nom = $("aMiembro").selectedOptions[0]?.textContent || "";
+    try{ await rpc("asignar_evento",{p_codigo:S.codigo,p_miembro:Number($("aMiembro").value),p_evento:Number($("aEvento").value),p_cantidad:cant}); await recargar(); toast(`Asignado a ${nom}`); }catch(er){ toast(er.message) }
+  });
+  if($("btnProbar")) $("btnProbar").onclick = () => ocupado($("btnProbar"), async ()=>{
+    try{ await rpc("probar_mail",{p_codigo:S.codigo,p_destino:$("mailPrueba").value}); toast("Prueba enviada. Revisá tu casilla (y spam) en un minuto."); }catch(er){ toast(er.message) }
+  });
+  if($("btnRecordar")) $("btnRecordar").onclick = async () => {
+    if(!await confirmar("¿Enviar recordatorio ahora?","A cada dirigente que debe le llega un mail con su estado de cuenta. Además, esto sale solo los días 1 y 16 de cada mes.","Enviar","")) return;
+    ocupado($("btnRecordar"), async ()=>{ try{ const r = await rpc("enviar_recordatorios_ahora",{p_codigo:S.codigo}); toast(`Se están enviando ${r.encolados} recordatorios`); }catch(er){ toast(er.message) } });
+  };
+  if($("btnHist")) $("btnHist").onclick = () => ocupado($("btnHist"), async ()=>{
+    try{ const ns = await rpc("notificaciones_recientes",{p_codigo:S.codigo}); const box=$("histMails"); box.hidden=false;
+      const est = {enviado:'<span class="pill ok">Enviado</span>', pendiente:'<span class="pill warn">Enviando</span>', error:'<span class="pill bad">Error</span>', sin_mail:'<span class="pill off">Sin mail</span>'};
+      const tipo = {recibo:"Recibo", recordatorio:"Recordatorio", prueba:"Prueba"};
+      box.innerHTML = ns.length ? ns.map(n=>`<div class="item"><div class="ic">${I("mail")}</div><div class="l"><div class="t">${tipo[n.tipo]} · ${esc(n.miembro||n.destino||"")}</div>
+        <div class="muted small">${n.fecha}${n.destino?` · ${esc(n.destino)}`:""}${n.detalle?` · ${esc(n.detalle)}`:""}</div></div>${est[n.estado]}</div>`).join("") : `<div class="muted small">Todavía no se envió ningún mail.</div>`;
+    }catch(er){ toast(er.message) } });
+  if($("btnTraspaso")) $("btnTraspaso").onclick = async () => {
+    const sel = $("nuevoGuia"); if(!sel.value){ toast("Primero creá o elegí otro tesorero"); return; }
+    const nombre = sel.selectedOptions[0].textContent;
+    if(!await confirmar(`¿Pasarle el rol de guía a ${nombre}?`, `${esc(nombre)} va a poder ver y gestionar todo. Vos vas a quedar como tesorero común y ya no vas a ver la gestión. No se puede deshacer desde tu cuenta.`, "Pasar el rol")) return;
+    ocupado($("btnTraspaso"), async ()=>{
+      try{ const r = await rpc("traspasar_guia",{p_codigo:S.codigo,p_nuevo:Number(sel.value)});
+        const link = linkPersonal(r.codigo);
+        const msg = `Hola ${primer(r.nuevo_guia)}, desde ahora sos el guía del área en la app de aportes. Tu acceso (no lo compartas):\n${link}`;
+        await recargar(); S.tab="inicio"; render();
+        abrirHoja(`<div class="estado ok">${I("check")}<span>${esc(r.nuevo_guia)} es el nuevo guía</span></div>
+          <div class="muted small">Mandale su acceso. Desde su cuenta va a ver la pestaña Gestión.</div>
+          <div class="receipt" style="word-break:break-all">${esc(link)}</div>
+          ${r.celular?`<a class="btn wa" target="_blank" rel="noopener" href="${waLink(r.celular,msg)}">${I("msg")} Enviar por WhatsApp</a>`:""}
+          <button class="btn ghost" data-cerrar>Cerrar</button>`);
+      }catch(er){ toast(er.message) }
+    });
+  };
+}
+async function abrirDetalle(b){
   const det = b.parentElement.querySelector("[data-det]");
   if(!det.hidden){ det.hidden = true; b.setAttribute("aria-expanded","false"); return; }
   det.hidden = false; b.setAttribute("aria-expanded","true");
   det.innerHTML = `<div class="muted small">Cargando…</div>`;
   try{
-    const c = await rpc("cuenta_de",{p_codigo:CODIGO,p_miembro:Number(b.dataset.mem)});
-    const link = linkPersonal(c.miembro.codigo);
-    const msg = `Hola ${c.miembro.nombre.split(" ")[0]}, este es tu link personal para ver tu cuenta de aportes y cargar comprobantes. No lo compartas:\n${link}`;
+    const c = await rpc("cuenta_de",{p_codigo:S.codigo,p_miembro:Number(b.dataset.mem)});
     det.innerHTML = `
       ${aporteHTML(c.aporte, false)}
       <h3>Por concepto · debe hoy <span class="debt num">${fmt(c.saldo)}</span></h3>
       <div class="list">${conceptosHTML(c.conceptos)}</div>
       <h3>Historial de pagos</h3>
-      <div class="list">${pagosHTML(c.pagos)}</div>
-      <div class="actions"><a class="btn ghost" target="_blank" rel="noopener" href="${waLink(c.miembro.celular, msg)}">Enviarle su link por WhatsApp</a>
-        <button class="btn link" data-cerrar>Cerrar</button></div>
-      <div class="muted small" style="word-break:break-all">Link personal: ${esc(link)}</div>`;
-    det.querySelector("[data-cerrar]").onclick = ()=>{ det.hidden = true; b.setAttribute("aria-expanded","false"); b.scrollIntoView({block:"nearest"}); };
+      <div class="list">${pagosHTML(c.pagos, true)}</div>
+      <div class="actions"><button class="btn soft sm" data-link-det>${I("msg","sm")} Enviarle su link</button></div>`;
+    det.querySelector("[data-link-det]").onclick = (ev) => { ev.stopPropagation();
+      const link = linkPersonal(c.miembro.codigo);
+      const msg = `Hola ${primer(c.miembro.nombre)}, este es tu link personal para ver tu cuenta de aportes y subir comprobantes. No lo compartas:\n${link}`;
+      abrirHoja(`<h2>Link de ${esc(c.miembro.nombre)}</h2><div class="receipt" style="word-break:break-all">${esc(link)}</div>
+        <div class="actions">${c.miembro.celular?`<a class="btn wa" target="_blank" rel="noopener" href="${waLink(c.miembro.celular,msg)}">${I("msg")} Enviar por WhatsApp</a>`:""}<button class="btn soft" data-cerrar>Cerrar</button></div>`);
+    };
   }catch(err){ det.innerHTML = `<div class="err">${esc(err.message)}</div>`; }
-};
-
-$("eGuardar").onclick = () => ocupado($("eGuardar"), async ()=>{
-  const monto = Number($("eMonto").value);
-  if(!(monto>0)){ toast("Ingresá el monto recibido"); return; }
-  try{
-    const r = await rpc("registrar_efectivo",{p_codigo:CODIGO,p_miembro:Number($("eMiembro").value),
-      p_evento:$("eConcepto").value?Number($("eConcepto").value):null,p_monto:monto});
-    $("eMonto").value=""; await recargar(); mostrarRecibo(r); toast("Pago en efectivo registrado");
-  }catch(err){ toast(err.message) }
-});
-
-function calcTotal(){
-  const ev = (DATA?.eventos||[]).find(e=>String(e.id)===$("aEvento").value);
-  $("aTotal").value = ev ? fmt((Number($("aCant").value)||0)*ev.precio) : "";
 }
-$("aEvento").onchange = calcTotal; $("aCant").oninput = calcTotal;
-$("aGuardar").onclick = () => ocupado($("aGuardar"), async ()=>{
-  const cant = Number($("aCant").value);
-  if(!(cant>0)){ toast("Ingresá una cantidad"); return; }
-  try{
-    await rpc("asignar_evento",{p_codigo:CODIGO,p_miembro:Number($("aMiembro").value),p_evento:Number($("aEvento").value),p_cantidad:cant});
-    const nom = $("aMiembro").selectedOptions[0]?.textContent || "";
-    await recargar(); toast(`Asignado a ${nom}`);
-  }catch(err){ toast(err.message) }
-});
-
-$("tCopy").onclick = async ()=>{
-  try{ await navigator.clipboard.writeText($("tRecibo").textContent); toast("Recibo copiado"); }
-  catch(_){ const r=document.createRange(); r.selectNodeContents($("tRecibo")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Texto seleccionado, copialo"); }
-};
 
 // ===== Inicio =====
 $("btnEntrar").onclick = ()=>{ const c=$("inCodigo").value.trim(); if(c){ $("loginErr").hidden=true; entrar(c); } };
 $("inCodigo").onkeydown = e => { if(e.key==="Enter") $("btnEntrar").click(); };
-$("btnSalir").onclick = ()=>{ try{localStorage.removeItem("aportes_codigo")}catch(_){} CODIGO=null; DATA=null;
-  history.replaceState(null,"",location.pathname); $("hdrTitulo").textContent="Aportes"; $("inCodigo").value=""; mostrar("vLogin"); };
-
 const desdeLink = new URLSearchParams(location.search).get("c");
-const inicial = desdeLink || leerCodigo();
+const inicial = desdeLink || read("aportes_codigo");
 if(inicial) entrar(inicial); else mostrar("vLogin");
 </script>
 </body>
